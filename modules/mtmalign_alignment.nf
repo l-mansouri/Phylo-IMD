@@ -1,0 +1,21 @@
+process 'mTM-align_alignment' {
+  
+  tag "${id}"
+  publishDir "${params.output}/msa_fasta", mode: 'copy', overwrite: true, pattern: "*.fa"
+  publishDir "${params.output}/mTMalign_matrix", mode: 'copy', overwrite: true, pattern: "*.matrix"
+
+  input:
+    tuple val(id), path(inputs), path(pdb)
+
+  output:
+    tuple val(id), path("*.fa"), emit: fasta_aln
+    tuple val(id), path("*.matrix"), emit: tmscore_matrix
+    script:
+  """
+  mTM-align -i ${inputs}
+  mv mTM_result/result.fasta ./${id}_${params.align}.fa
+  mv mTM_result/infile ./${id}_${params.align}.matrix
+  sed -i "s/${id}//g" ${id}_${params.align}.fa
+  """
+
+}
