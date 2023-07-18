@@ -33,7 +33,7 @@ workflow PHYLO_IMD{
     ====================================
     General parameters:
     -------------------
-    Type of analysis                        :${params.mode}
+    Type of analysis                        : ${params.mode}
     Alignment method                        : ${params.align}
     Trimming                                : ${params.trimmer}
 
@@ -73,7 +73,7 @@ workflow{
 }
 
 
- workflow.onComplete {
+workflow.onComplete {
 
     def msg = """\
         Pipeline execution summary
