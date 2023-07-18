@@ -42,13 +42,13 @@ workflow PHYLO_IMD{
     Gamma rate                              : ${params.gammaRate}
     Random seed value                       : ${params.seedValue}
     Number of bootstrap replicates          : ${params.replicatesNum}
-    IMD_tree mode   		                : ${params.tree_mode}
+    IMD_tree mode                           : ${params.tree_mode}
 
     Input data:
     -----------
     Input (FASTA or input list)		        : ${params.fasta}
     Input template file		                : ${params.templates}
-    Input structures (PDBs)		            : ${params.pdb}
+    Input structures (PDBs)                 : ${params.pdb}
 
     Output folder:                          : ${params.output}
     """
