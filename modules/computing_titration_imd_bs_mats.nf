@@ -1,4 +1,4 @@
-process 'computing_IMD_titr_matrices' {
+process 'computing_IMD_titr_matrices_bs' {
  //errorStrategy 'ignore'
   tag"${id}"
   publishDir "${params.output}/IMD_matrices/", mode: 'copy', overwrite: true
@@ -13,7 +13,7 @@ process 'computing_IMD_titr_matrices' {
   script:
   """
     export THREED_TREE_MODE=${params.tree_mode}
-    t_coffee -other_pg seq_reformat -in ${fasta} -in2 ${template} -action +columns4tree ${pairs} +replicates ${params.replicatesNum} +phylo3d  -output dm > ${pairs}.matrices 
+    t_coffee -other_pg seq_reformat -in ${fasta} -in2 ${template} -action +columns4tree ${pairs} +replicates ${params.replicatesNum} +print_replicates +phylo3d  -output dm > ${pairs}.matrices 
     sed -i -E  's/^([^[:space:]]{1,10})[^[:space:]]*/\\1/' ${pairs}.matrices 
   """
 }
