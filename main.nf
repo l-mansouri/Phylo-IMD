@@ -55,14 +55,14 @@ workflow PHYLO_IMD{
 
     //code with conditions
     if (params.mode == 'standard' && params.trimmer == 'trimmal'){
-        trimmed_Phylo_IMD( input_fasta, templates, structures)
+        trimmed_Phylo_IMD( input_fasta, templates, structures )
     } 
     else if (params.mode == 'standard' && params.trimmer != 'trimmal'){
-        untrimmed_Phylo_IMD( input_fasta, templates, structures)
+        untrimmed_Phylo_IMD( input_fasta, templates, structures )
     }
-    // else if (params.mode == 'titration'){
-
-    // }
+    else if (params.mode == 'titration'){
+        titration_Phylo_IMD( input_fasta, templates, structures )
+    }
     // else if (params.mode == 'titration_bootstrap'){
 
     // }
