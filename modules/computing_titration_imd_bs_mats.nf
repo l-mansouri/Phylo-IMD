@@ -2,13 +2,14 @@ process 'computing_IMD_titr_matrices_bs' {
  //errorStrategy 'ignore'
   tag"${id}"
   publishDir "${params.output}/IMD_matrices/", mode: 'copy', overwrite: true
+  container 'lmansouri/phylo_imd_tcoffee:1.0'
 
   input:
     tuple val(id), path(fasta), path(template), path(pairs), path(pdb)
 
 
   output:
-    tuple val(id), path("*.matrices") emit: matrixOut
+    tuple val(id), path("*.matrices"), emit: matrixOut
 
   script:
   """

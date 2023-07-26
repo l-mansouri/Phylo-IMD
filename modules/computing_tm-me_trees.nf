@@ -1,4 +1,6 @@
 process 'converting_TM_to_fastme'{
+  container 'lmansouri/phylo_imd_base:1.0'
+
   input:
   tuple val(id), path(tm_mat) 
 
@@ -7,23 +9,25 @@ process 'converting_TM_to_fastme'{
 
   script:
   """
-    sed -E 's/^([^[:space:]]{10})[^[:space:]]*/\\1 /' ${tm_mat} >${id}_tmscore_4_fastme.matrix
+    sed -E 's/^([^[:space:]]{10})*/\\1 /' ${tm_mat} >${id}_tmscore_4_fastme.matrix
   """
 }
 
-process 'computing_TM-ME_trees' {
+process 'computing_TM_ME_trees' {
   tag"${id}"
-  publishDir "${params.output}/TM-ME_trees", mode: 'copy', overwrite: true
+  publishDir "${params.output}/TM_ME_trees", mode: 'copy', overwrite: true
+  container 'lmansouri/phylo_imd_fastme:1.0'
+
   //errorStrategy 'ignore'
 
   input:
-  tuple val(id), path(mat-tm) 
+  tuple val(id), path(mat_tm) 
 
   output:
-  path("*.nwk"), emit tr_TM-ME 
+  path("*.nwk"), emit: tr_TM_ME 
 
   script:
   """
-  fastme -i ${mat-tm} -g ${params.gammaRate} -s -n -z ${params.seedValue}
+  fastme -i ${mat_tm} -g ${params.gammaRate} -s -n -z ${params.seedValue}
   """
 }

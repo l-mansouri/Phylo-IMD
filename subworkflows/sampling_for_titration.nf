@@ -9,7 +9,7 @@ workflow SELECTING_RANDOM_POSITIONS{
 
     removing_gaps(fasta_aln)
     
-    def lenFilter = { tuple -> tuple[1] >= 200 }
+    def lenFilter = { tuple -> tuple[1].toInteger() >= 200 }
     def removelen = { tuple -> [tuple[0], tuple[2]] }
     // Use the filter method to keep only the tuples where lenght of the remaining sequences is >= 200
     removing_gaps.out.filter(lenFilter).map(removelen).set{ungapped_alns}

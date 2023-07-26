@@ -8,10 +8,10 @@ workflow TRIMMING_ALIGNMENT{
     main:
 
     trimming_aln(fasta_aln)
-    fasta_aln.combine(trimmed_aln.out, by:0).set{for_mapping}
+    fasta_aln.combine(trimming_aln.out, by:0).set{for_mapping}
     mapping_pos(for_mapping)
 
     emit:
-    trimmed_aln=trimming_aln.out
+    trimmed_aln=trimming_aln.out.trimmed_fasta
     mapped_pos=mapping_pos.out
 }

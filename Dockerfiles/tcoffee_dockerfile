@@ -1,0 +1,93 @@
+FROM debian:buster@sha256:333b6452b51d512b0fe7c64b2b6bbf06ec433c5c18b749bf495dd0aafcc79093
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ed \
+    less \
+    vim-tiny \
+    wget \
+    git \
+    python \
+    build-essential \
+    cmake \
+    curl \
+    libargtable2-0 \
+    ca-certificates \
+    python-biopython \
+    python-numpy \
+    ruby \
+    python-setuptools \
+    default-jdk \
+    libpng-dev\
+    python3\
+    gfortran\
+    valgrind\
+    python3-numpy\
+    automake\
+    shtool
+
+
+
+
+
+RUN git clone https://github.com/cbcrg/tcoffee.git tcoffee && \
+    cd tcoffee && \
+    git checkout 2aa9ca73ea072fed152e0ab3170a07a4ba9668db && \
+    cd t_coffee/src && \
+    make t_coffee && \
+    cp t_coffee /bin/.
+
+
+RUN wget https://zhanglab.ccmb.med.umich.edu/TM-align/TMalign.f && \
+    gfortran -static -O3 -ffast-math -lm -o TMalign TMalign.f
+
+RUN wget http://lcb.infotech.monash.edu.au/mustang/mustang_v3.2.3.tgz && \
+    tar -zxvf mustang_v3.2.3.tgz && \
+    cd MUSTANG_v3.2.3/ && \
+    make && \
+    cp bin/mustang-3.2.3 /bin/mustang && \
+    rm /mustang_v3.2.3.tgz
+
+RUN wget https://s3.eu-central-1.amazonaws.com/tcoffee-packages/Stable/Latest/T-COFFEE_installer_Version_13.46.0.919e8c6b_linux_x64.tar.gz && \
+    tar xvzf T-COFFEE_installer_Version_13.46.0.919e8c6b_linux_x64.tar.gz && \
+    mv T-COFFEE_installer_Version_13.46.0.919e8c6b_linux_x64/plugins/linux/ /linux_plugins_for_tcoffee && \
+    rm -r T-COFFEE_installer_Version_13.46.0.919e8c6b_linux_x64* && \
+    rm linux_plugins_for_tcoffee/TMalign && \
+    mv TMalign linux_plugins_for_tcoffee/. && \
+    mv /MUSTANG_v3.2.3/bin/mustang-3.2.3 linux_plugins_for_tcoffee/mustang && \
+    cp linux_plugins_for_tcoffee/* /bin/.
+
+
+#install fasta35 (needed for mafft)
+RUN wget https://fasta.bioch.virginia.edu/wrpearson/fasta/fasta33-35/fasta-35.4.12.tar.gz --no-check-certificate && \
+    tar -zxf fasta-35.4.12.tar.gz && \
+    cd fasta-35.4.12/src && \
+    make -f ../make/Makefile.linux_sse2 && \
+    cp ../bin/* /bin/. && \
+    rm /fasta-35.4.12.tar.gz
+
+# install MAFFT
+RUN wget http://mafft.cbrc.jp/alignment/software/mafft-7.397-with-extensions-src.tgz && \
+    tar xfvz mafft-7.397-with-extensions-src.tgz && \
+    cd mafft-7.397-with-extensions/core/ && \
+    sed -i "s/PREFIX = \/usr\/local/PREFIX = \/mafft/g" Makefile && \
+    sed -i "s/BINDIR = \$(PREFIX)\/bin/BINDIR = \/mafft\/bin/g" Makefile && \
+    make clean && \
+    make && \
+    make install && \
+    wget http://mafft.cbrc.jp/alignment/software/newick2mafft.rb && \
+    chmod +x newick2mafft.rb && \
+    cp newick2mafft.rb /bin/. && \
+    export "PATH=$PATH:/mafft/bin" && \
+    cp /mafft/bin/* /bin/. && \
+    mv /mafft-7.397-with-extensions /mafft && \
+    rm /mafft-7.397-with-extensions-src.tgz &&\
+    mv /bin/ginsi /bin/mafft_ginsi &&\
+    mv /bin/linsi /bin/mafft_linsi
+
+
+RUN chmod -R 777 /bin/.
+
+ENV CACHE_4_TCOFFEE='${TMPDIR:-/tmp}/.tcoffee/cache'
+ENV LOCKDIR_4_TCOFFEE='${TMPDIR:-/tmp}/.tcoffee/lock'
+ENV TMP_4_TCOFFEE='${TMPDIR:-/tmp}/.tcoffee/tmp'

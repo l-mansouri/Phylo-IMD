@@ -1,12 +1,13 @@
 process 'trimming_aln' {
     tag"${id}"
     publishDir "${params.output}/TRIMMED_fasta/", mode: 'copy', overwrite: true, pattern: "*.fa"
+    container 'lmansouri/phylo_imd_trimal:1.0'
 
     input:
         tuple val(id), path(fasta)
 
     output:
-        set val(id), file("*.fa"), emit: trimmed_fasta
+        tuple val(id), file("*.fa"), emit: trimmed_fasta
     
     script:
     """

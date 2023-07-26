@@ -1,6 +1,7 @@
 process 'converting_to_phylip' {
   tag"${id}"
   publishDir "${params.output}/msa_ph", mode: 'copy', overwrite: true
+  container 'lmansouri/phylo_imd_tcoffee:1.0'
 
   input:
     tuple val(id), path(fasta) 

@@ -1,0 +1,36 @@
+FROM debian:buster@sha256:333b6452b51d512b0fe7c64b2b6bbf06ec433c5c18b749bf495dd0aafcc79093
+
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ed \
+    less \
+    vim-tiny \
+    wget \
+    git \
+    python \
+    build-essential \
+    cmake \
+    curl \
+    libargtable2-0 \
+    ca-certificates \
+    python-biopython \
+    python-numpy \
+    ruby \
+    python-setuptools \
+    default-jdk \
+    libpng-dev\
+    python3\
+    gfortran\
+    valgrind\
+    python3-numpy\
+    automake\
+    shtool
+
+
+#install mTM-align
+RUN wget http://yanglab.nankai.edu.cn/mTM-align/version/mTM-align.tar.bz2 &&\
+    tar -xf mTM-align.tar.bz2 &&\
+    cp mTM-align/src/mTM-align /bin/.
+
+
+RUN chmod -R 777 /bin/.

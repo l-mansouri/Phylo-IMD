@@ -1,7 +1,8 @@
-process '3dcoffee_alignment' {
+process 'sap_tmalign_alignment' {
     
   tag "${id}"
   publishDir "${params.output}/msa_fasta" , mode: 'copy', overwrite: true
+  container 'lmansouri/phylo_imd_tcoffee:1.0'
   
   input:
     tuple val(id), path(fasta), path(template), path(pdb)

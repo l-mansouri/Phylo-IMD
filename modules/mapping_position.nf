@@ -1,5 +1,7 @@
 process 'mapping_pos' {
     tag"${id}"
+    container 'lmansouri/phylo_imd_iqtree:1.0'
+    
     input:
         tuple val(id), path(original_msa), path(trimmed_msa) 
     

@@ -1,14 +1,15 @@
-process 'computing_Seq-ME_trees' {
+process 'computing_Seq_ME_trees' {
 
     tag"${id}"
     publishDir "${params.output}/ME_trees/", mode: 'copy', overwrite: true
+    container 'lmansouri/phylo_imd_fastme:1.0'
 
     input:
     tuple val(id),path(phylip) 
 
     output:
-    tuple val(id),path("*.nwk"), emit: tr_Seq-ME
-    tuple val(id), path("*.replicates"), emit: rep_Seq-ME
+    tuple val(id),path("*.nwk"), emit: tr_Seq_ME
+    tuple val(id), path("*.replicates"), emit: rep_Seq_ME
 
     script:
     """
@@ -16,17 +17,19 @@ process 'computing_Seq-ME_trees' {
     """
 }
 
-process 'computing_Seq-ME_trees_no_bs' {
+process 'computing_Seq_ME_trees_no_bs' {
 
     tag"${id}"
     publishDir "${params.output}/ME_trees/", mode: 'copy', overwrite: true
+    container 'lmansouri/phylo_imd_fastme:1.0'
+
 
     input:
     tuple val(id),path(phylip) 
 
     output:
-    tuple val(id),path("*.nwk"), emit: tr_Seq-ME
-    tuple val(id), path("*.replicates"), emit: rep_Seq-ME
+    tuple val(id),path("*.nwk"), emit: tr_Seq_ME
+
 
     script:
     """
