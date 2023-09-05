@@ -15,6 +15,6 @@ process 'tcoffee_alignment' {
     """
         t_coffee -in ${fasta} -output=fasta_aln >${id}_${params.align}.clustal
         mv ${id}.fasta_aln ${id}_${params.align}.fa
-	sed -i "/^$/d" ${id}_${params.align}.fa
+	sed -i "/^\$/d" ${id}_${params.align}.fa
     """
 }
