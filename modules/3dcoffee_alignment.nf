@@ -13,5 +13,6 @@ process 'sap_tmalign_alignment' {
   script:
   """
   t_coffee -seq ${fasta} -template_file ${template} -method sap_pair TMalign_pair -output fasta_aln -outfile ${id}_${params.align}.fa
+  sed -i "/^$/d" ${id}_${params.align}.fa
   """
 }

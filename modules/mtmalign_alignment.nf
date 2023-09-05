@@ -17,6 +17,7 @@ process 'mTMalign_alignment' {
   mv mTM_result/result.fasta ./${id}_${params.align}.fa
   mv mTM_result/infile ./${id}_${params.align}.mat
   sed -i "s/${id}.//g" ${id}_${params.align}.fa
+  sed -i "/^$/d" ${id}_${params.align}.fa
   python ${baseDir}/bin/mat_modification.py ${id}_${params.align}.fa ${id}_${params.align}.mat ${id}_${params.align}.matrix
   """
 
