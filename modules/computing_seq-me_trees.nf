@@ -13,7 +13,7 @@ process 'computing_Seq_ME_trees' {
 
     script:
     """
-    fastme -i ${phylip} -o ${id}_${params.align}_${params.trimmer}.nwk -m BioNJ -p LG -g ${params.gammaRate} -s -n -z ${params.seedValue} -b 100 -B ${id}_${params.align}_${params.trimmer}.1dtree.replicates
+    fastme -i ${phylip} -o ${phylip.baseName}.nwk -m BioNJ -p LG -g ${params.gammaRate} -s -n -z ${params.seedValue} -b 100 -B ${phylip.baseName}.1dtree.replicates
     """
 }
 
@@ -33,6 +33,6 @@ process 'computing_Seq_ME_trees_no_bs' {
 
     script:
     """
-    fastme -i ${phylip} -o ${id}_${params.align}_${params.trimmer}.nwk -m BioNJ -p LG -g ${params.gammaRate} -s -n -z ${params.seedValue}
+    fastme -i ${phylip} -o ${phylip.baseName}.nwk -m BioNJ -p LG -g ${params.gammaRate} -s -n -z ${params.seedValue}
     """
 }

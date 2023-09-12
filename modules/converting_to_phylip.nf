@@ -11,7 +11,7 @@ process 'converting_to_phylip' {
 
   script:
   """
-    t_coffee -other_pg seq_reformat -in ${fasta} -output phylip_aln > ${id}_${params.align}.ph
+    t_coffee -other_pg seq_reformat -in ${fasta} -output phylip_aln > ${fasta.baseName}.ph
   """
 
 }
