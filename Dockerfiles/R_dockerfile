@@ -1,0 +1,10 @@
+FROM rocker/r-ver:4.1.0
+
+RUN apt-get update && apt-get install -y \
+    libssl-dev \
+    libxml2-dev \
+    libglpk40
+
+RUN R -e "install.packages('phangorn', dependencies = TRUE)"
+RUN R -e "install.packages('argparser', dependencies = TRUE)"
+ENTRYPOINT ["/bin/bash"] 

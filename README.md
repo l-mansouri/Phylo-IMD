@@ -47,3 +47,19 @@ To run the titration, you should run the pipeline like:
 To run bootstrap on titration trees:
 `nextflow run main.nf -profile titration_bootstrap`
 
+## MULTISTRAP
+
+To obtain the combined bootstrap support values in any dataset, the multistrap profile should be used. 
+To see how to properly prepare the input files, please look into the example dataset in the ./data folder. 
+
+The command line should be: 
+
+`nextflow run main.nf -profile multistrap -fasta <id.fasta> -templates <id.template> -pdbs <id.seq1.pdb, id.seq2.pdb .. >`
+
+This will: 
+- compute the mTMalign MSA
+- compute the sequence based tree and bootstrap replicates (Seq-ME or Seq-ML)
+- compute the IMD-ME-based tree and bootstrap replicates
+- return the tree with the combined (multistrap) bootstrap support values
+
+

@@ -1,7 +1,8 @@
-include { untrimmed_Phylo_IMD } from './workflows/UNTRIMMED_PHYLO_IMD.nf'
-include { trimmed_Phylo_IMD } from './workflows/TRIMMED_PHYLO_IMD.nf'
-include { titration_Phylo_IMD } from './workflows/TITRATION.nf'
+include { untrimmed_Phylo_IMD           } from './workflows/UNTRIMMED_PHYLO_IMD.nf'
+include { trimmed_Phylo_IMD             } from './workflows/TRIMMED_PHYLO_IMD.nf'
+include { titration_Phylo_IMD           } from './workflows/TITRATION.nf'
 include { titration_bootstrap_Phylo_IMD } from './workflows/TITRATION_BOOTSTRAP.nf'
+include { MULTISTRAP                    } from './workflows/MULTISTRAP.nf'
 
 workflow PHYLO_IMD{
     //Prepare input channels
@@ -67,7 +68,10 @@ workflow PHYLO_IMD{
     }
     else if (params.mode == 'titration_bootstrap'){
         titration_bootstrap_Phylo_IMD( input_fasta, templates, structures )
+    }else if (params.mode == "multistrap"){
+        MULTISTRAP( input_fasta, templates, structures )
     }
+
 }
 
 workflow{

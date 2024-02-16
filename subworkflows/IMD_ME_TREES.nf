@@ -21,7 +21,7 @@ workflow GENERATE_IMD_ME_TREES{
         computing_IMD_ME_trees(for_IMD_trees)
 
     emit:
-    computing_IMD_ME_trees.out
+    tree = computing_IMD_ME_trees.out.tr_IMD_ME
 }
 
 workflow GENERATE_IMD_ME_TR_TREES{

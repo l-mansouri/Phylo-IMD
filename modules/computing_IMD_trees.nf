@@ -8,7 +8,7 @@ process 'computing_IMD_ME_trees' {
   tuple val(id), path(mat) 
 
   output:
-  path("*.nwk"), emit: tr_IMD_ME
+  tuple val(id), path("*.nwk"), emit: tr_IMD_ME
 
   script:
   """

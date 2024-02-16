@@ -10,8 +10,9 @@ workflow GENERATE_SEQ_ME_TREES{
     converting_to_phylip(fasta_aln)
     computing_Seq_ME_trees(converting_to_phylip.out)
     
-    // emit:
-    // computing_Seq_ME_trees.out
+    emit:
+    tree       = computing_Seq_ME_trees.out.tr_Seq_ME
+    replicates = computing_Seq_ME_trees.out.rep_Seq_ME
 }
 
 workflow GENERATE_SEQ_ME_NO_BS_TREES{
