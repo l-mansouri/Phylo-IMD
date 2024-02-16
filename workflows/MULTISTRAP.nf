@@ -28,7 +28,7 @@ workflow MULTISTRAP{
             GENERATE_SEQ_ME_TREES(MTM_ALIGNMENT.out.fasta_aln)
             SEQ_TREE_AND_REPLICATES = GENERATE_SEQ_ME_TREES.out.tree.combine(GENERATE_SEQ_ME_TREES.out.replicates, by:0)
         }
-        else if (params.align=='ML'){
+        else if (params.seq_tree=='ML'){
             GENERATE_SEQ_ML_TREES(MTM_ALIGNMENT.out.fasta_aln)
             SEQ_TREE_AND_REPLICATES = GENERATE_SEQ_ML_TREES.out.tree.combine(GENERATE_SEQ_ML_TREES.out.replicates, by:0)
         }

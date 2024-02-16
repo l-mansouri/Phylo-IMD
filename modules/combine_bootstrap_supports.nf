@@ -1,7 +1,7 @@
 process 'COMBINE_BOOTSTRAP_SUPPORTS' {
     
   tag "${id}"
-  publishDir "${params.output}/multistrap/$id" , mode: 'copy', overwrite: true
+  publishDir "${params.output}/multistrap_${params.seq_tree}/$id" , mode: 'copy', overwrite: true
   container 'luisas/r_multistrap:1.0'
   
   input:
