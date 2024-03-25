@@ -3,6 +3,7 @@ include { trimmed_Phylo_IMD             } from './workflows/TRIMMED_PHYLO_IMD.nf
 include { titration_Phylo_IMD           } from './workflows/TITRATION.nf'
 include { titration_bootstrap_Phylo_IMD } from './workflows/TITRATION_BOOTSTRAP.nf'
 include { MULTISTRAP                    } from './workflows/MULTISTRAP.nf'
+include { ANALYSIS                      } from './workflows/ANALYSIS.nf'
 
 workflow PHYLO_IMD{
     //Prepare input channels
@@ -68,8 +69,24 @@ workflow PHYLO_IMD{
     }
     else if (params.mode == 'titration_bootstrap'){
         titration_bootstrap_Phylo_IMD( input_fasta, templates, structures )
-    }else if (params.mode == "multistrap"){
+    }
+    else if (params.mode == "multistrap"){
         MULTISTRAP( input_fasta, templates, structures )
+    }
+    else if (params.mode == "analysis"){
+
+        if ( params.msas ) {
+            Channel
+                .fromPath(params.msas)
+                .map { item -> [ item.simpleName.split("_")[0], item.simpleName.split("_")[1..-1].join("_"), item] }
+                .filter { id, method, file -> method in ["tcoffee", "sap_tmalign", "mTMalign"] }
+                .set { msas }
+        }
+
+        ANALYSIS( msas, templates, structures )
+    }
+    else{
+        error "Mode not recognized"
     }
 
 }

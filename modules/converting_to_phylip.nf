@@ -1,6 +1,7 @@
 process 'converting_to_phylip' {
   tag"${id}"
-  publishDir "${params.output}/msa_ph", mode: 'copy', overwrite: true
+  //publishDir "${params.output}/msa_ph", mode: 'copy', overwrite: true
+  storeDir "${params.output}/msa_ph"
   container 'lmansouri/phylo_imd_tcoffee:1.0'
 
   input:

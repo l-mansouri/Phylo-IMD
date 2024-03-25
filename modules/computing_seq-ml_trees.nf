@@ -1,7 +1,8 @@
 process 'computing_Seq_ML_trees'{
   errorStrategy 'ignore'
   tag"${id}"
-  publishDir "${params.output}/ML_trees/", mode: 'copy', overwrite: true
+  //publishDir "${params.output}/ML_trees/", mode: 'copy', overwrite: true
+  storeDir "${params.output}/ML_trees/${id}"
   container 'lmansouri/phylo_imd_iqtree:1.0'
 
   input:
