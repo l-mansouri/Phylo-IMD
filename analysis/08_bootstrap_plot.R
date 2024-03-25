@@ -4,93 +4,101 @@ library(RColorBrewer)
 library(patchwork)
 
 setwd("/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis")
+fl=read.table('source_data/list_of_families_with_all_rep_in_3d')[,1]
 
-df = read.table("source_data/bootstrap_table.csv",   header = TRUE, sep = ",")
 
-C3dme=round(cor(df$average_1d, df$average_3d),2)
-C3dml=round(cor(df$average_ML, df$average_3d),2)
-CrfME=round(cor(df$average_3d,df$RF_3d_ME ),2)
-CrfML=round(cor(df$average_3d,df$RF_3d_ML ),2)
+# ---------------------------------------------------------------
+# FUNCTIONS
+# ---------------------------------------------------------------
 
-cRFme=c()
-cRFml=c()
-xpos=c()
-for (th in 1:100){
-    crfme=c()
-    crfml=c()
-    for (p in 1:length(df[,1])){
-        r =as.numeric(df[p,])
-        if (r[2]>=th && r[2]<th+10){#(r[1]>=th && r[1]<th+10  ){ #&& r[2]>=th && r[2]<th+10
-            crfme=c(crfme,r[5])
-        #}
-        #if (r[3]>=th && r[3]<th+10 ){ #&& r[2]>=th && r[2]<th+10
-            crfml=c(crfml, r[6])
+scatter_plot <- function(df, title = "", tag = list("A", "B")){
+    df = read.table(df,   header = TRUE, sep = ",")
+
+    C3dme=round(cor(df$average_1d, df$average_3d),2)
+    C3dml=round(cor(df$average_ML, df$average_3d),2)
+    CrfME=round(cor(df$average_3d,df$RF_3d_ME ),2)
+    CrfML=round(cor(df$average_3d,df$RF_3d_ML ),2)
+
+    cRFme=c()
+    cRFml=c()
+    xpos=c()
+    for (th in 1:100){
+        crfme=c()
+        crfml=c()
+        for (p in 1:length(df[,1])){
+            r =as.numeric(df[p,])
+            if (r[2]>=th && r[2]<th+10){
+                crfme=c(crfme,r[5])
+                crfml=c(crfml, r[6])
+            }
         }
+        xpos=c(xpos,th)
+        cRFme=c(cRFme, mean(crfme))
+        cRFml=c(cRFml, mean(crfml))
     }
-    xpos=c(xpos,th)
-    cRFme=c(cRFme, mean(crfme))
-    cRFml=c(cRFml, mean(crfml))
-}
 
-df_rf=data.frame(xpos, cRFme,cRFml)
-df_rf1=data.frame(xpos, cRFme)
-df_rf2=data.frame(xpos, cRFml)
+    df_rf=data.frame(xpos, cRFme,cRFml)
+    df_rf1=data.frame(xpos, cRFme)
+    df_rf2=data.frame(xpos, cRFml)
 
-coeff=100
+    coeff=100
 
-p1<- ggplot(df, aes(y=average_1d, x=average_3d, color=RF_3d_ME) ) + geom_point() + scale_color_gradient(low="red", high="blue")+
-    ylab('Seq-ME average bootstrap ')+
-    xlab('IMD-ME average bootstrap ')+
-    labs(color='RF') +geom_abline(color='gray')+
-    annotate('text', x=35, y=95, label=paste('R = ', C3dme,sep='')) +
-    xlim(c(0,100))+ylim(c(0,100))+theme_light()+
-    theme(axis.text = element_text( size = 12, color = "black"))+
-    theme(axis.title = element_text( size = 14, color = "black"))
+    p1<- ggplot(df, aes(y=average_1d, x=average_3d, color=RF_3d_ME) ) + geom_point() + scale_color_gradient(low="red", high="blue")+
+        ylab('Seq-ME average bootstrap ')+
+        xlab('IMD-ME average bootstrap ')+
+        labs(color='RF') +geom_abline(color='gray')+
+        annotate('text', x=35, y=95, label=paste('R = ', C3dme,sep='')) +
+        xlim(c(0,100))+ylim(c(0,100))+theme_light()+
+        theme(axis.text = element_text( size = 12, color = "black"))+
+        theme(axis.title = element_text( size = 14, color = "black"))
+            
+
+        
+    df_rf1=na.omit(df_rf1)
     
-df_rf1=na.omit(df_rf1)
+    p12=p1+ geom_line(data=df_rf1, aes(x=xpos, y=cRFme*coeff), color='black', size=1.2, alpha=0.7) + 
+        scale_y_continuous(
+        # Features of the first axis
+        #name = paste('average bootstrap ',al,'_Seq-ME', sep=''), 
+        # Add a second axis and specify its features
+        sec.axis = sec_axis(~./coeff, name="Average RF"),
+        limits=c(0,100)
+    ) + labs(title = title, tag = bquote(bold(.(tag[[1]]))))+
+        theme(axis.title = element_text( size = 14))+ theme(plot.title = element_text(hjust = 0.5))
 
-p12=p1+ geom_line(data=df_rf1, aes(x=xpos, y=cRFme*coeff), color='black', size=1.2, alpha=0.7) + 
+
+
+
+    p2<- ggplot(df, aes(y=average_ML, x=average_3d, color=RF_3d_ML) ) + geom_point() + scale_color_gradient(low="red", high="blue")+
+        xlab('IMD-ME average bootstrap')+
+        ylab('Seq-ML average bootstrap')+
+        labs(color='RF') +geom_abline(color='gray')+
+        annotate('text', x=33, y=95, label=paste('R = ', C3dml,sep=''))+
+        xlim(c(0,100))+ylim(c(0,100))+theme_light()+
+        theme(axis.text = element_text( size = 12, color = "black"))+
+        theme(axis.title = element_text( size = 14, color = "black"))+
+        labs(title = title, tag = bquote(bold(.(tag[[2]]))))
+        theme(axis.title = element_text( size = 14))+ theme(plot.title = element_text(hjust = 0.5))
+
+
+
+    df_rf2=na.omit(df_rf2)
+
+    p23=p2+ geom_line(data=df_rf2, aes(x=xpos, y=cRFml*coeff), color='black', size=1.2, alpha=0.7) + 
     scale_y_continuous(
     # Features of the first axis
-    #name = paste('average bootstrap ',al,'_Seq-ME', sep=''), 
+    #name = paste('average bootstrap ',al,'_Seq-ML', sep=''), 
     # Add a second axis and specify its features
     sec.axis = sec_axis(~./coeff, name="Average RF"),
     limits=c(0,100)
-  ) + labs(tag = bquote(bold(.("A"))))
+    )
 
-
-p2<- ggplot(df, aes(y=average_ML, x=average_3d, color=RF_3d_ML) ) + geom_point() + scale_color_gradient(low="red", high="blue")+
-    xlab('IMD-ME average bootstrap')+
-    ylab('Seq-ML average bootstrap')+
-    labs(color='RF') +geom_abline(color='gray')+
-    annotate('text', x=33, y=95, label=paste('R = ', C3dml,sep=''))+
-    xlim(c(0,100))+ylim(c(0,100))+theme_light()+
-    theme(axis.text = element_text( size = 12, color = "black"))+
-    theme(axis.title = element_text( size = 14, color = "black"))+
-    labs(tag = bquote(bold(.("B"))))
-
-df_rf2=na.omit(df_rf2)
-
-p23=p2+ geom_line(data=df_rf2, aes(x=xpos, y=cRFml*coeff), color='black', size=1.2, alpha=0.7) + 
-scale_y_continuous(
-# Features of the first axis
-#name = paste('average bootstrap ',al,'_Seq-ML', sep=''), 
-# Add a second axis and specify its features
-sec.axis = sec_axis(~./coeff, name="Average RF"),
-limits=c(0,100)
-)
-
-
-
-#ggsave(paste('plots/main/',al, '_', tr, '_avg_BS_RF_ME_3d_avgRFline_movingwindow10_xaxis_508.png',sep=''), plot=p12,width = 6.7, height = 5.1)
-#ggsave(paste('plots/main/',al, '_', tr, '_avg_BS_RF_ML_3d_avgRFline_movingwindow10_xaxis_508.png',sep=''), plot=p23,width = 6.7, height = 5.1)
-pA <- p12
-pB <- p23
+    return(list(p12, p23))
+}
 
 
 # --------------------- Second part of pane: lineplot ---------------------------------------------------------------------------
 
-fl=read.table('source_data/list_of_families_with_all_rep_in_3d')[,1]
 
 plot_lines <- function(al,tr, folder, tag = list("","")){
   DF= read.table(paste('source_data/',al,'_',tr,'counts_of_found_in_ML_and_ME_with_moving_IMD_BS_thr.txt', sep=''), header = T)
@@ -165,10 +173,17 @@ plot_lines <- function(al,tr, folder, tag = list("","")){
     theme(plot.margin = margin(1, 1, 1, 1, "cm"))
   
   
-  #ggsave(paste('plots/',folder,'/03C_',al,'_',tr,'_found_in_ML_moving_thr_on_IMD_bootstrap.png', sep = ""), plot=PML, width = 5.5, height =5)
-  #ggsave(paste('plots/',folder,'/03D_',al,'_',tr,'_found_in_ME_moving_thr_on_IMD_bootstrap.png', sep = ""), plot=PME, width = 5.5, height =5)
   return(list(PME,PML))
 }
+
+# ---------------------------------
+# MAIN
+# --------------------------------- 
+
+main <- scatter_plot("source_data/mTMalign_untrimmed_bootstrap_table.csv",tag = list("A", "B"))
+pA <- main[[1]]
+pB <- main[[2]]
+
 
 main <- plot_lines("mTMalign", "untrimmed", "main", tag = list("C", "D"))
 pC <- main[[1]]
@@ -184,13 +199,37 @@ ggsave(paste('plots/',"main",'/Fig3_bootstrap.png', sep = ""), plot=panel, width
 # SUPPLEMENTARY
 # ---------------------------------
 
+# --------------- SCATTERPLOTS ---------------------
 
-al="mTMalign"
-tr="untrimmed"
+# UNTRIMMED
+pAB <- scatter_plot("source_data/sap_tmalign_untrimmed_bootstrap_table.csv", title = "3D-Coffee untrimmed", tag = list("A", "B"))
+pa <- pAB[[1]]
+pb <- pAB[[2]]
+pCD <- scatter_plot("source_data/tcoffee_untrimmed_bootstrap_table.csv", title = "T-Coffee untrimmed", tag = list("C", "D"))
+pc <- pCD[[1]]
+pd <- pCD[[2]]
 
-# --------------- Panels supplementary ---------------------
+panel <- (pa+pb)/(pc+pd)
+ggsave(paste('plots/',"suppl",'/S3_scatter_bootstrap_untrimmed.png', sep = ""), plot=panel, width = 14 , height =12)
+
 
 # TRIMMED
+pAB <- scatter_plot("source_data/mTMalign_trimmed_bootstrap_table.csv", title = "mTMalign trimmed", tag = list("A", "B"))
+pa <- pAB[[1]]
+pb <- pAB[[2]]
+pCD <- scatter_plot("source_data/sap_tmalign_trimmed_bootstrap_table.csv", title = "3D-Coffee trimmed", tag = list("C", "D"))
+pc <- pCD[[1]]
+pd <- pCD[[2]]
+pEF <- scatter_plot("source_data/tcoffee_trimmed_bootstrap_table.csv", title = "T-Coffee trimmed", tag = list("E", "F"))
+pe <- pEF[[1]]
+pf <- pEF[[2]]
+
+panel <- (pa+pb)/(pc+pd)/(pe+pf)
+ggsave(paste('plots/',"suppl",'/S4_scatter_bootstrap_trimmed.png', sep = ""), plot=panel, width = 15 , height =18)
+
+
+#---------------- LINEPLOTS ---------------------
+# UNTRIMMED
 pAB <- plot_lines("sap_tmalign", "untrimmed", "suppl", list("A", "B"))
 pa <- pAB[[1]]
 pb <- pAB[[2]]
@@ -214,3 +253,5 @@ pf_t <- pEF_t[[2]]
 
 panel <- (pa_t+pb_t)/(pc_t+pd_t)/(pe_t+pf_t)
 ggsave(paste('plots/',"suppl",'/S6_lineplot_bootstrap_trimmed.png', sep = ""), plot=panel, width = 9.5 , height =13, dpi = 300)
+
+

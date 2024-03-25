@@ -12,7 +12,7 @@ setwd('/home/luisasantus/Desktop/crg_cluster/NF_draft/')
 # read in trees and calculate shared branches
 # -----------------------------------------------------------------------------
 
-aligners=c('sap_tmalign', 'tcoffee')
+aligners=c('sap_tmalign', 'tcoffee', "mTMalign")
 trimming=c('untrimmed', 'trimmed')
         
 for (al in aligners){
@@ -35,7 +35,9 @@ for (al in aligners){
                 trml = read.tree(paste(al, '_ML_', tr,'_trees/',fam, '_', al, '_ML_', tr, '.nwk',sep=''))
                 #importing 3d tree
                 tr3d = read.tree(paste(al,'_3d_ME_',tr,'_trees/',fam,'_',al,'_3d_',tr,'.nwk', sep=''))
-                #tr3d = read.tree(paste(al,'_3d_ME_',tr,'_trees/',fam,'_',al,'_3d_ME_',tr,'.nwk', sep=''))
+                if (al=='mTMalign'){
+                    tr3d = read.tree(paste(al,'_3d_ME_',tr,'_trees/',fam,'_',al,'_3d_ME_',tr,'.nwk', sep=''))
+                }
                 #importing ME
                 tr1d = read.tree(paste(al, '_ME_', tr,'_trees/',fam, '_', al, '_ME_', tr, '.nwk',sep=''))
 
@@ -84,62 +86,69 @@ for (al in aligners){
 # -----------------------------------------------------------------------------
 
 
-al="mTMalign"
-tr="untrimmed"
+for (al in aligners){
+    print(al)
+    for (tr in trimming){
+        print(tr)
+        avg_bs_ME=c()
+        avg_bs_3d=c()
+        avg_bs_ML=c()
+        RF_3d_ME=c()
+        RF_3d_ML=c()
+        for (fam in fl){
+            #importing ME tree
+            tr1d = read.tree(paste(al, '_ME_', tr,'_trees/',fam, '_', al, '_ME_', tr, '.nwk',sep=''))
+            #importing ML tree
+            trml = read.tree(paste(al, '_ML_', tr,'_trees/',fam, '_', al, '_ML_', tr, '.nwk',sep=''))
+            #importing 3d tree
+            if(al=='mTMalign'){
+                tr3d = read.tree(paste(al,'_3d_ME_',tr,'_trees/',fam,'_',al,'_3d_ME_',tr,'.nwk', sep=''))
+            } else{
+                tr3d = read.tree(paste(al,'_3d_ME_',tr,'_trees/',fam,'_',al,'_3d_',tr,'.nwk', sep=''))
+            }
+            #processing ME distance matrix
+            b1d=tr1d$node.label
+            b1d=b1d[-1]
+            b1d=as.numeric(b1d)
+            b1d[is.na(b1d)]<-0
+            av1d=mean(b1d)
 
-avg_bs_ME=c()
-avg_bs_3d=c()
-avg_bs_ML=c()
-RF_3d_ME=c()
-RF_3d_ML=c()
-for (fam in fl){
-    #importing ME tree
-    tr1d = read.tree(paste(al, '_ME_', tr,'_trees/',fam, '_', al, '_ME_', tr, '.nwk',sep=''))
-    #importing ML tree
-    trml = read.tree(paste(al, '_ML_', tr,'_trees/',fam, '_', al, '_ML_', tr, '.nwk',sep=''))
-    #importing 3d tree
-    #tr3d = read.tree(paste(al,'_3d_ME_',tr,'_trees/',fam,'_',al,'_3d_',tr,'.nwk', sep=''))
-    tr3d = read.tree(paste(al,'_3d_ME_',tr,'_trees/',fam,'_',al,'_3d_ME_',tr,'.nwk', sep=''))
-    #processing ME distance matrix
-    b1d=tr1d$node.label
-    b1d=b1d[-1]
-    b1d=as.numeric(b1d)
-    b1d[is.na(b1d)]<-0
-    av1d=mean(b1d)
+            b3d=tr3d$node.label
+            b3d=b3d[-1]
+            b3d=as.numeric(b3d)
+            b3d[is.na(b3d)]<-0
+            av3d=mean(b3d)
 
-    b3d=tr3d$node.label
-    b3d=b3d[-1]
-    b3d=as.numeric(b3d)
-    b3d[is.na(b3d)]<-0
-    av3d=mean(b3d)
+            bml=trml$node.label
+            bml=bml[-1]
+            bml=as.numeric(bml)
+            bml[is.na(bml)]<-0
+            avml=mean(bml)
 
-    bml=trml$node.label
-    bml=bml[-1]
-    bml=as.numeric(bml)
-    bml[is.na(bml)]<-0
-    avml=mean(bml)
+            rf3dme=RF.dist(tr1d, tr3d, normalize=T)
+            rf3dml=RF.dist(trml, tr3d, normalize=T)
+            
+            avg_bs_ME=c(avg_bs_ME, av1d)
+            avg_bs_3d=c(avg_bs_3d, av3d )
+            avg_bs_ML=c(avg_bs_ML, avml)
+            RF_3d_ME=c(RF_3d_ME, rf3dme)
+            RF_3d_ML=c(RF_3d_ML, rf3dml)
+        }
+        df=data.frame(
+            family=fl,
+            average_1d=as.numeric(avg_bs_ME),
+            average_3d=as.numeric(avg_bs_3d),
+            average_ML=as.numeric(avg_bs_ML),
+            RF_3d_ME,
+            RF_3d_ML
+        )
+        C3dme=round(cor(avg_bs_ME, avg_bs_3d),2)
+        C3dml=round(cor(avg_bs_ML, avg_bs_3d),2)
+        CrfME=round(cor(avg_bs_3d,RF_3d_ME ),2)
+        CrfML=round(cor(avg_bs_3d,RF_3d_ML ),2)
 
-    rf3dme=RF.dist(tr1d, tr3d, normalize=T)
-    rf3dml=RF.dist(trml, tr3d, normalize=T)
-    
-    avg_bs_ME=c(avg_bs_ME, av1d)
-    avg_bs_3d=c(avg_bs_3d, av3d )
-    avg_bs_ML=c(avg_bs_ML, avml)
-    RF_3d_ME=c(RF_3d_ME, rf3dme)
-    RF_3d_ML=c(RF_3d_ML, rf3dml)
+
+        write.table(df, file = paste( source_data, paste(al,'_',tr,"_bootstrap_table.csv", sep = ""), sep = "/"), sep = ",", qmethod = "double", row.names = FALSE)
+
+    }
 }
-df=data.frame(
-    family=fl,
-    average_1d=as.numeric(avg_bs_ME),
-    average_3d=as.numeric(avg_bs_3d),
-    average_ML=as.numeric(avg_bs_ML),
-    RF_3d_ME,
-    RF_3d_ML
-)
-C3dme=round(cor(avg_bs_ME, avg_bs_3d),2)
-C3dml=round(cor(avg_bs_ML, avg_bs_3d),2)
-CrfME=round(cor(avg_bs_3d,RF_3d_ME ),2)
-CrfML=round(cor(avg_bs_3d,RF_3d_ML ),2)
-
-
-write.table(df, file = paste(source_data,"bootstrap_table.csv", sep = "/"), sep = ",", qmethod = "double", row.names = FALSE)
