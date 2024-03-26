@@ -1,11 +1,11 @@
 library(phangorn)
 library(ggplot2)
 
-aligners=c('mTMalign', 'sap_tmalign', 'tcoffee')
-trimming=c('untrimmed', 'trimmed')
-
+# ! PIPELINE OUTPUT FOLDER, CHANGE ACCORDINGLY
+output_folder = '/home/luisasantus/Desktop/crg_cluster/NF_draft/'
+# ! SOURCE DATA FOLDER, CHANGE ACCORDINGLY
 source_data = '/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis/source_data/'
-fl = read.table(paste(source_data,'list_of_families_with_all_rep_in_3d', sep = "/"))[,1]
+
 
 # -----------------------------------------------------------------------------
 # Overview of the script: 
@@ -13,10 +13,11 @@ fl = read.table(paste(source_data,'list_of_families_with_all_rep_in_3d', sep = "
 # read in distance matrices and extract distances
 # compute correlation between input distances and patristic distances
 # -----------------------------------------------------------------------------
+fl = read.table(paste(source_data,'list_of_families_with_all_rep_in_3d', sep = "/"))[,1]
 
-
-setwd('/home/luisasantus/Desktop/crg_cluster/NF_draft/')
-
+setwd(output_folder)
+aligners=c('mTMalign', 'sap_tmalign', 'tcoffee')
+trimming=c('untrimmed', 'trimmed')
 for (al in aligners){
     print(al)
     for (tr in trimming){

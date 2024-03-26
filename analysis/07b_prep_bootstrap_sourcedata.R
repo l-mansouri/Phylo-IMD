@@ -2,9 +2,12 @@ library(phangorn)
 library(ggplot2)
 library(ggExtra)
 
+# ! PIPELINE OUTPUT FOLDER, CHANGE ACCORDINGLY
+output_folder = '/home/luisasantus/Desktop/crg_cluster/NF_draft/'
+# ! SOURCE DATA FOLDER, CHANGE ACCORDINGLY
 source_data = '/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis/source_data/'
 fl=read.table('list_of_families_with_all_rep_in_3d')[,1]
-setwd('/home/luisasantus/Desktop/crg_cluster/NF_draft/')
+setwd(output_folder)
 
 
 # -----------------------------------------------------------------------------

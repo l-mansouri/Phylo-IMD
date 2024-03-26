@@ -3,7 +3,6 @@ library(gridExtra)
 library(RColorBrewer)
 library(patchwork)
 
-setwd("/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis")
 fl=read.table('source_data/list_of_families_with_all_rep_in_3d')[,1]
 
 

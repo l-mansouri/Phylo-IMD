@@ -1,6 +1,13 @@
 
-# Folder with the output of the pipeline
+# ! PIPELINE OUTPUT FOLDER, CHANGE ACCORDINGLY
 output_folder = '/home/luisasantus/Desktop/crg_cluster/NF_draft/'
+
+# -----------------------------------------------------------------------------
+# Overview of the script: 
+# read in irmsd files and extract the total NiRMSD line
+# save the NiRMSD in a df ready to be plotted
+# -----------------------------------------------------------------------------
+
 
 tcoffee_nirmsd <- list.files(path= paste(output_folder, "tcoffee_NiRMSD", sep = "/"), pattern = '*.NiRMSD', recursive = F, full.names = TRUE)
 mtmalign_nirmsd <- list.files(path= paste(output_folder, "mTMalign_NiRMSD", sep = "/"), pattern = '*.NiRMSD', recursive = F, full.names = TRUE)

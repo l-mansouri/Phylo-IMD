@@ -1,18 +1,23 @@
 library(phangorn)
 
+
+# ! PIPELINE OUTPUT FOLDER, CHANGE ACCORDINGLY
+output_folder = '/home/luisasantus/Desktop/crg_cluster/NF_draft/'
+# ! SOURCE DATA FOLDER, CHANGE ACCORDINGLY
+source_data = '/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis/source_data/'
+
 # -----------------------------------------------------------------------------
 # Overview of the script: 
 # read in trees and calculate RF distance
 # -----------------------------------------------------------------------------
 
 
-source_data = '/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis/source_data/'
-fl=read.table(paste(source_data,'list_of_families_with_all_rep_in_3d', sep = "/"))[,1]
+fl=read.table(paste("source_data",'list_of_families_with_all_rep_in_3d', sep = "/"))[,1]
 al="mTMalign"
 tr="untrimmed"
 RF3d=c()
 RFtm=c()
-setwd('/home/luisasantus/Desktop/crg_cluster/NF_draft/')
+setwd(output_folder)
 for (fam in fl){
   #importing ML tree
   trml = read.tree(paste(al, '_ML_', tr,'_trees/',fam, '_', al, '_ML_', tr, '.nwk',sep=''))

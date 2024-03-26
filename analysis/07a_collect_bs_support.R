@@ -1,4 +1,9 @@
 
+
+# ! PIPELINE OUTPUT FOLDER, CHANGE ACCORDINGLY
+output_folder = '/home/luisasantus/Desktop/crg_cluster/NF_draft/'
+setwd(output_folder)
+
 # -----------------------------------------------------------------------------
 # Overview of the script: 
 # read in replicates

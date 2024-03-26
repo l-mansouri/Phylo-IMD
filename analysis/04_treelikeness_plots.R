@@ -4,7 +4,6 @@ library(gridExtra)
 library(RColorBrewer)
 
 # ---------------------------- MAIN ------------------------------------------------------------------
-setwd("/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis")
 mtm=read.table('source_data/mTMalign_ME_untrimmed_saturation_correlations.txt', header=T)
 
 # mtmALIGN UNTRIMMED
