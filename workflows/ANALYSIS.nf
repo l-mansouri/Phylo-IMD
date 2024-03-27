@@ -1,4 +1,5 @@
 include { evaluate_nirmsd                    } from '../modules/evaluate_nirmsd.nf'
+include { split_analysis                     } from '../subworkflows/split_analysis.nf'
 
 workflow ANALYSIS{
 
@@ -21,8 +22,11 @@ workflow ANALYSIS{
 
         evaluate_nirmsd( aln_ch )
 
-        aln_ch.view()
-        // prep nirmsd (etxract last column)
+
+        // ------------------
+        //     SPLITS- AUC
+        // ------------------
+
 
 
 }

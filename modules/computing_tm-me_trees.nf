@@ -15,7 +15,7 @@ process 'converting_TM_to_fastme'{
 
 process 'computing_TM_ME_trees' {
   tag"${id}"
-  publishDir "${params.output}/TM_ME_trees", mode: 'copy', overwrite: true
+  publishDir "${params.output}/${params.align}_TM_${params.trimmer}_trees", mode: 'copy', overwrite: true
   container 'lmansouri/phylo_imd_fastme:1.0'
 
   //errorStrategy 'ignore'
@@ -29,5 +29,6 @@ process 'computing_TM_ME_trees' {
   script:
   """
   fastme -i ${mat_tm} -g ${params.gammaRate} -s -n -z ${params.seedValue}
+  mv ${id}*.nwk ${id}_${params.align}_TM_ME_${params.trimmer}.nwk
   """
 }

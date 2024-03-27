@@ -58,10 +58,10 @@ workflow PHYLO_IMD{
     """
 
     //code with conditions
-    if (params.mode == 'standard' && params.trimmer == 'trimmal'){
+    if (params.mode == 'standard' && params.trimmer == 'trimmed'){
         trimmed_Phylo_IMD( input_fasta, templates, structures )
     } 
-    else if (params.mode == 'standard' && params.trimmer != 'trimmal'){
+    else if (params.mode == 'standard' && params.trimmer == 'untrimmed'){
         untrimmed_Phylo_IMD( input_fasta, templates, structures )
     }
     else if (params.mode == 'titration'){
@@ -78,7 +78,7 @@ workflow PHYLO_IMD{
         if ( params.msas ) {
             Channel
                 .fromPath(params.msas)
-                .map { item -> [ item.simpleName.split("_")[0], item.simpleName.split("_")[1..-1].join("_"), item] }
+                .map { item -> [ item.simpleName.split("_")[0], item.simpleName.split("_")[1..-1].join("_").replaceAll(".fa", ""), item] }
                 .filter { id, method, file -> method in ["tcoffee", "sap_tmalign", "mTMalign"] }
                 .set { msas }
         }

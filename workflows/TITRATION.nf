@@ -19,7 +19,7 @@ workflow 'titration_Phylo_IMD' {
             alignment=MTM_ALIGNMENT.out.fasta_aln
             SELECTING_RANDOM_POSITIONS(MTM_ALIGNMENT.out.fasta_aln)
             }
-        else if (params.align=='3dcoffee'){
+        else if (params.align=='sap_tmalign'){
             STM_ALIGNMENT(input_fasta, templates, structures)
             alignment=STM_ALIGNMENT.out.fasta_aln
             SELECTING_RANDOM_POSITIONS(STM_ALIGNMENT.out.fasta_aln)

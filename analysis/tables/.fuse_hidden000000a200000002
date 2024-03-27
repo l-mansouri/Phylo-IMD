@@ -1,4 +1,0 @@
-Method,Average BS,Congruence with Seq-ML trees,Congruence with Seq-ML trees (BS>=75),Seq-ML Shared branches (%),Seq-ML Shared branches (count),BS=100 Seq-ML Shared branches (count),BS=100 Seq-ML Shared branches (%)
-Seq-ME,43.47,0.67,0.87,67,5601,552,100
-TM-ME,NA,0.4,NA,39.75,3240,NA,NA
-IMD-ME,66.37,0.42,0.55,42.11,3416,1591,83.17

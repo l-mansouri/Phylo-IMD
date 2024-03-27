@@ -2,7 +2,7 @@ process 'mTMalign_alignment' {
 
   container 'lmansouri/phylo_imd_mtmalign:1.0'
   tag "${id}"
-  publishDir "${params.output}/msa_fasta", mode: 'copy', overwrite: true, pattern: "*.fa"
+  publishDir "${params.output}/${params.align}_fasta", mode: 'copy', overwrite: true, pattern: "*.fa"
   publishDir "${params.output}/mTMalign_matrix", mode: 'copy', overwrite: true, pattern: "*.matrix"
 
   input:

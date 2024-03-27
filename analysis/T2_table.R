@@ -33,5 +33,8 @@ rownames(df_thresholds) = c("Seq-ME", "IMD-ME", "Seq-ML")
 colnames(df_thresholds) = c("60%", "75%", "90%")
 # reorder rows
 df_thresholds = df_thresholds[c("Seq-ME", "Seq-ML","IMD-ME"),]
+df_thresholds$method = rownames(df_thresholds)
+# make methof first column
+df_thresholds = df_thresholds[,c(4,1,2,3)]
 write.table(df_thresholds, file=paste(tables, paste("Table2.csv", sep=''), sep = "/"), append=F,quote=F, sep = ",", eol = "\n", na = "NA", dec = ".",row.names =F, col.names =T)
 

@@ -62,4 +62,9 @@ This will:
 - compute the IMD-ME-based tree and bootstrap replicates
 - return the tree with the combined (multistrap) bootstrap support values
 
+# Analysis 
+
+To compute extra statistics needed for the complete analysis shown in the paper, such as the calculation of NiRMSD, you can use the profile analysis.
+
+`nextflow run main.nf -profile analysis -msas <id.aln> -templates <id.template> -pdbs <id.seq1.pdb, id.seq2.pdb .. >`
 

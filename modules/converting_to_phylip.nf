@@ -1,7 +1,6 @@
 process 'converting_to_phylip' {
   tag"${id}"
-  //publishDir "${params.output}/msa_ph", mode: 'copy', overwrite: true
-  storeDir "${params.output}/msa_ph"
+  publishDir "${params.output}/${params.align}_${params.trimmer}_ph", mode: 'copy', overwrite: true
   container 'lmansouri/phylo_imd_tcoffee:1.0'
 
   input:
@@ -12,7 +11,7 @@ process 'converting_to_phylip' {
 
   script:
   """
-    t_coffee -other_pg seq_reformat -in ${fasta} -output phylip_aln > ${fasta.baseName}.ph
+  t_coffee -other_pg seq_reformat -in ${fasta} -output phylip_aln > ${fasta.baseName}.ph
   """
 
 }

@@ -8,7 +8,7 @@ df_tc = DF2[DF2$type == "T-Coffee",]
 df_st = DF2[DF2$type == "3D-Coffee",]
 df_mt = DF2[DF2$type == "mTM-align",]
 
-DF2
+
 palette = c("#4421af", "darkgrey","#ef9b20")
 
 p1=ggplot(DF2, aes(x=type, y=NiRMSD, fill=type, col = type, alpha = 0.6))+

@@ -1,7 +1,7 @@
 process 'computing_IMD_tr_matrices' {
  //errorStrategy 'ignore'
   tag"${id}"
-  publishDir "${params.output}/IMD_matrices/", mode: 'copy', overwrite: true
+  publishDir "${params.output}/${params.align}_3d_ME_${params.trimmer}_matrix/", mode: 'copy', overwrite: true
   container 'lmansouri/phylo_imd_tcoffee:1.0'
 
   input:

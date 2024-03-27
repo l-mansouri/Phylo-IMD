@@ -1,7 +1,7 @@
 process 'tcoffee_alignment' {
     
     tag"${id}"
-    publishDir "${params.output}/msa_fasta", mode: 'copy', overwrite: true
+    publishDir "${params.output}/${params.align}_fasta", mode: 'copy', overwrite: true
     container 'lmansouri/phylo_imd_tcoffee:1.0'
 
 
@@ -13,8 +13,8 @@ process 'tcoffee_alignment' {
     
     script:
     """
-        t_coffee -in ${fasta} -output=fasta_aln >${id}_${params.align}.clustal
-        mv ${id}.fasta_aln ${id}_${params.align}.fa
+    t_coffee -in ${fasta} -output=fasta_aln >${id}_${params.align}.clustal
+    mv ${id}.fasta_aln ${id}_${params.align}.fa
 	sed -i "/^\$/d" ${id}_${params.align}.fa
     """
 }
