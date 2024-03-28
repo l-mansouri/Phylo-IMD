@@ -83,22 +83,6 @@ workflow PHYLO_IMD{
                 .set { msas }
         }
 
-        if ( params.trees ) {
-            Channel
-                .fromPath(trees)
-                .map { item -> [ item.baseName.split('_')[0], item] }
-                .set{trees_ch}
-        }
-        
-
-        if ( params.replicates ) {
-            Channel
-                .fromPath(replicates)
-                .map { item -> [ item.baseName.split('_')[0], item] }
-                .set{replicates_ch}
-        }
-
-
         ANALYSIS( msas, templates, structures )
     }
     else{
