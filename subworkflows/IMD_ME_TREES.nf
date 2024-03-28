@@ -62,7 +62,7 @@ workflow GENERATE_IMD_ME_TITR_TREES{
         fasta_aln.combine(templates, by:0).combine(sampled_pos, by:0).combine(structures, by:0).set{for_IMD_mat_titr}
 
         computing_IMD_titr_matrices(for_IMD_mat_titr)
-        computing_IMD_ME_trees(computing_IMD_titr_matrices.out)
+        computing_IMD_ME_trees(computing_IMD_titr_matrices.out, "")
 
     emit:
     computing_IMD_ME_trees.out
@@ -80,9 +80,12 @@ workflow GENERATE_IMD_ME_TITR_BS_TREES{
 
         computing_IMD_titr_matrices_bs(for_IMD_mat_titr)
         extracting_matrices(computing_IMD_titr_matrices_bs.out)
-        extracting_matrices.out.flatten().map { item -> [ item.simpleName, item] }.set{for_IMD_trees}
-        computing_IMD_ME_trees(for_IMD_trees)
+        extracting_matrices.out.main.flatten().map { item -> [ item.simpleName, item] }.set{for_IMD_trees}
+        extracting_matrices.out.replicates.flatten().map { item -> [ item.simpleName, item] }.set{for_IMD_trees_replicates}
+        computing_IMD_ME_trees(for_IMD_trees, "")
+        computing_IMD_ME_trees_rep(for_IMD_trees_replicates, "replicates")
 
     emit:
-    computing_IMD_ME_trees.out
+    tree = computing_IMD_ME_trees.out.tr_IMD_ME
+    replicates = computing_IMD_ME_trees_rep.out.tr_IMD_ME
 }

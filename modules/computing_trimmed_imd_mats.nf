@@ -13,8 +13,8 @@ process 'computing_IMD_tr_matrices' {
 
   script:
   """
-    export THREED_TREE_MODE=${params.tree_mode}
-    t_coffee -other_pg seq_reformat -in ${fasta} -in2 ${template} -action +columns4tree ${pairs} +replicates ${params.replicatesNum} +print_replicates +phylo3d  -output dm > ${id}_${params.align}_${params.trimmer}.matrices 
-    sed -i -E  's/^([^[:space:]]{1,10})[^[:space:]]*/\\1/' ${id}_${params.align}_${params.trimmer}.matrices 
+  export THREED_TREE_MODE=${params.tree_mode}
+  t_coffee -other_pg seq_reformat -in ${fasta} -in2 ${template} -action +columns4tree ${pairs} +replicates ${params.replicatesNum} +print_replicates +phylo3d  -output dm > ${id}_${params.align}_${params.trimmer}.matrices 
+  sed -i -E  's/^([^[:space:]]{1,10})[^[:space:]]*/\\1/' ${id}_${params.align}_${params.trimmer}.matrices 
   """
 }

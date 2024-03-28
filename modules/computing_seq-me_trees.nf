@@ -14,7 +14,11 @@ process 'computing_Seq_ME_trees' {
 
     script:
     """
-    fastme -i ${phylip} -o ${id}_${params.align}_${params.trimmer}_ME.nwk -m BioNJ -p LG -g ${params.gammaRate} -s -n -z ${params.seedValue} -b ${params.replicatesNum} -B ${id}_${params.align}_${params.trimmer}_ME.replicates
+    fastme -i ${phylip} -o ${phylip.baseName}.nwk -m BioNJ -p LG -g ${params.gammaRate} -s -n -z ${params.seedValue} -b ${params.replicatesNum} -B ${phylip.baseName}.replicates
+    if [ ! -f *_columns.nwk ]; then
+        mv *.nwk ${id}_${params.align}_${params.trimmer}_ME.nwk
+        mv *.replicates ${id}_${params.align}_${params.trimmer}_ME.replicates
+    fi
     """
 }
 
@@ -35,6 +39,10 @@ process 'computing_Seq_ME_trees_no_bs' {
 
     script:
     """
-    fastme -i ${phylip} -o ${id}_${params.align}_${params.trimmer}_ME.nwk -m BioNJ -p LG -g ${params.gammaRate} -s -n -z ${params.seedValue} -O ${id}_${params.align}_${params.trimmer}_ME.matrix
+    fastme -i ${phylip} -o ${phylip.baseName}.nwk -m BioNJ -p LG -g ${params.gammaRate} -s -n -z ${params.seedValue} -O ${phylip.baseName}.matrix
+    if [ ! -f *_columns.nwk ]; then
+        mv *.nwk ${id}_${params.align}_${params.trimmer}_ME.nwk
+        mv *.matrix ${id}_${params.align}_${params.trimmer}_ME.matrix
+    fi
     """
 }

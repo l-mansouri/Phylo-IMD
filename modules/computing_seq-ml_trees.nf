@@ -15,8 +15,20 @@ process 'computing_Seq_ML_trees'{
   script:
   """
   iqtree -s ${phylip} -b ${params.replicatesNum}
-  mv *.treefile ${id}_${params.align}_${params.trimmer}_ML.nwk 
-  mv *.ph.boottrees ${id}_${params.align}_${params.trimmer}_ML.replicates
+  if [ ! -f *_columns.ph ]; then
+    mv *.treefile ${id}_${params.align}_${params.trimmer}_ML.nwk
+    mv *.boottrees ${id}_${params.align}_${params.trimmer}_ML.replicates
+  else
+    for file in *treefile; do
+      new_file="\${file%.treefile}.nwk"
+      mv \${file} \${new_file}
+    done
+
+    for file in *boottrees; do
+      new_file="\${file%.boottrees}.replicates"
+      mv \${file} \${new_file}
+    done
+  fi
   """
 }
 
@@ -37,6 +49,8 @@ process 'computing_Seq_ML_trees_no_bs'{
   script:
   """
   iqtree -s ${phylip} 
-  mv *treefile ${id}_${params.align}_${params.trimmer}_ML.nwk
+  if [ ! -f *_columns.ph ]; then
+    mv *.treefile ${id}_${params.align}_${params.trimmer}_ML.treefile
+  fi
   """
 }

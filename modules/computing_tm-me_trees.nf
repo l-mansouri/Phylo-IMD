@@ -9,7 +9,7 @@ process 'converting_TM_to_fastme'{
 
   script:
   """
-    sed -E 's/^([^[:space:]]{10})*/\\1 /' ${tm_mat} >${id}_tmscore_4_fastme.matrix
+  sed -E 's/^([^[:space:]]{10})*/\\1 /' ${tm_mat} >${id}_tmscore_4_fastme.matrix
   """
 }
 

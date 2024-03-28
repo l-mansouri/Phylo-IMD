@@ -8,7 +8,7 @@ workflow GENERATE_SEQ_ML_TREES{
         fasta_aln
     main:
     converting_to_phylip(fasta_aln)
-    computing_Seq_ML_trees(converting_to_phylip.out)
+    computing_Seq_ML_trees(converting_to_phylip.out.phylip_aln)
     
     emit:
     tree       = computing_Seq_ML_trees.out.tr_Seq_ML
@@ -20,7 +20,7 @@ workflow GENERATE_SEQ_ML_NO_BS_TREES{
         fasta_aln
     main:
     converting_to_phylip(fasta_aln)
-    computing_Seq_ML_trees_no_bs(converting_to_phylip.out)
+    computing_Seq_ML_trees_no_bs(converting_to_phylip.out.phylip_aln)
     
     // emit:
     // computing_Seq_ML_trees_no_bs.out

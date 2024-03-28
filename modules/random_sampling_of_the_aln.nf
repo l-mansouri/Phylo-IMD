@@ -14,6 +14,6 @@ process 'generating_randomized_fractions' {
 
     script:
     """
-        python ${baseDir}/bin/randomizing_msa_and_fractions_by_5.py ${ungapped_aln} ${original_aln} ${id} ${params.align}_${params.trimmer}
+    python ${baseDir}/bin/randomizing_msa_and_fractions_by_5.py ${ungapped_aln} ${original_aln} ${id} ${params.align}_${params.trimmer}
     """
 }

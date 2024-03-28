@@ -1,4 +1,4 @@
-process collecting_replicates{
+process "collecting_replicates"{
   tag "${id}_${params.type}"
   publishDir "${params.output}/all_tree_files/", mode: 'copy', overwrite: true
 
