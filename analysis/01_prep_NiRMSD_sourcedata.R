@@ -1,7 +1,7 @@
 
 # ! PIPELINE OUTPUT FOLDER, CHANGE ACCORDINGLY
-output_folder = '/home/luisasantus/Desktop/crg_cluster/NF_draft/'
-#output_folder = "./results/"
+#output_folder = '/home/luisasantus/Desktop/crg_cluster/NF_draft/'
+output_folder = "./results/"
 
 # -----------------------------------------------------------------------------
 # Overview of the script: 

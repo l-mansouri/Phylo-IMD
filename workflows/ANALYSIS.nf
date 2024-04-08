@@ -1,7 +1,6 @@
 include { evaluate_nirmsd                    } from '../modules/evaluate_nirmsd.nf'
 include { split_analysis                     } from '../subworkflows/split_analysis.nf'
 include { compute_splits                     } from '../subworkflows/compute_splits.nf'
-include { comparing_splitfiles               } from '../modules/comparing_splitfiles.nf'
 workflow ANALYSIS{
 
     take:
