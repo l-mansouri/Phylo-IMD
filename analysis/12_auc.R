@@ -15,22 +15,22 @@ output_dir = "/home/luisasantus/Desktop/crg_cluster/newphylo/NF_TMalign/mTMalign
 families =read.table(paste(source_data,'list_of_families_for_titration', sep = "/"))[,1]
 # TREE TYPE TO BE EVALUATED 
 tree_types = c("ME","ML", "IMD")
-tree_types = c("ME")
+#tree_types = c("ME")
 
 # REFERENCE DEFINITION 
 reference = c("IMD", "ME", "IMD+ME", "ML", "IMD+ML", "ME+ML", "IMD+ME+ML")
 # BOOTSTRAP THRESHOLD
 bs_thresholds = c(0,80,100)
-bs_thresholds = c(80)
+#bs_thresholds = c(80)
 
 # EVALUATED BOOTSTRAP 
 bs_combo = c("IMD","ME","ML", "ME+IMD", "ML+IMD", "ME+ML", "ME+ML+IMD")
 # NUMBER OF COLUMNS
 ncols = c(25,100,200)
-ncols = c(25)
+#ncols = c(25)
 # COMBINATION MODE 
 comb_mode = c("arithmetic_average","geometric_average", "min","max")
-comb_mode = c("arithmetic_average")
+#comb_mode = c("arithmetic_average")
 auc_complete_df <- data.frame()
 row_index <- 1
 for (fam in families){
@@ -81,20 +81,7 @@ for (fam in families){
 }
 
 
-auc_complete_df
-write.table(auc_complete_df, file = paste(source_data, "auc_complete_df_with_mcc_me.tsv", sep = "/"), sep = ",", row.names = FALSE)
-
-
-mean(auc_complete_df$auc_v)
-sd(auc_complete_df$auc_v)
-round(mean(auc_complete_df$best_threshold),0)
-round(sd(auc_complete_df$best_threshold),0)
-round(mean(auc_complete_df$sensitivity),2)
-round(mean(auc_complete_df$specificity),2)
-
-
-# Save the dataframe
-write.table(auc_complete_df, file = paste(source_data, "auc_complete_df_with_mcc_small.tsv", sep = "/"), sep = ",", row.names = FALSE)
+write.table(auc_complete_df, file = paste(source_data, "auc_complete_df_with_mcc.tsv", sep = "/"), sep = ",", row.names = FALSE)
 
 
 
