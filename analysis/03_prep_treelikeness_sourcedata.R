@@ -2,7 +2,7 @@ library(phangorn)
 library(ggplot2)
 
 # ! PIPELINE OUTPUT FOLDER, CHANGE ACCORDINGLY
-output_folder = '/home/luisasantus/Desktop/crg_cluster/NF_draft/'
+output_folder = '/home/luisasantus/Desktop/crg_cluster/newphylo/NF_draft/'
 # ! SOURCE DATA FOLDER, CHANGE ACCORDINGLY
 source_data = '/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis/source_data/'
 
@@ -14,10 +14,12 @@ source_data = '/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis
 # compute correlation between input distances and patristic distances
 # -----------------------------------------------------------------------------
 fl = read.table(paste(source_data,'list_of_families_with_all_rep_in_3d', sep = "/"))[,1]
-
 setwd(output_folder)
 aligners=c('mTMalign', 'sap_tmalign', 'tcoffee')
 trimming=c('untrimmed', 'trimmed')
+
+
+
 for (al in aligners){
     print(al)
     for (tr in trimming){

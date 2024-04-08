@@ -1,0 +1,8 @@
+Ref branches,Number ref. branches,% branches,Number of trees,average relative depth,average depth
+IMD,314,37.88,55,0.35,3.17
+ME,285,34.38,55,0.36,3.07
+ML,344,41.5,55,0.36,3.26
+IMD+ME,209,25.64,54,0.35,2.98
+IMD+ML,240,30.53,52,0.35,3.04
+ME+ML,253,30.52,55,0.36,3.05
+IMD+ME+ML,196,24.94,52,0.35,2.97

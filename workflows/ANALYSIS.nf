@@ -8,6 +8,9 @@ workflow ANALYSIS{
         msas
         templates 
         pdb
+        trees_ch
+        replicates_25_ch
+        replicates_200_ch
 
 
     main: 
@@ -22,44 +25,12 @@ workflow ANALYSIS{
         //     iRMSD
         // ------------------
 
-        //evaluate_nirmsd( aln_ch )
+        evaluate_nirmsd( aln_ch )
 
 
         // ------------------
         //     SPLITS- AUC
         // ------------------
-
-        
-        if ( params.trees ) {
-            Channel
-                .fromPath(params.trees)
-                .map { item -> [ item.baseName.split('_')[0], item.getParent().getBaseName().split('_')[0].strip(), item] }
-                .map { fam, type, tree -> [fam, type == "1d" ? "MEsplits" : type, tree] }
-                .map { fam, type, tree -> [fam, type == "3d" ? "IMDsplits" : type, tree] }
-                .map { fam, type, tree -> [fam, type == "ML" ? "MLsplits" : type, tree] }
-                .set{trees_ch}
-        }
-        
-        if ( params.replicates_25 ) {
-            Channel
-                .fromPath(params.replicates_25)
-                .map { item -> [ item.baseName.split('_')[0],item.getParent().getBaseName().split('_')[0].strip(), item] }
-                .map { fam, type, tree -> [fam, type == "1d" ? "MEbs25" : type, tree] }
-                .map { fam, type, tree -> [fam, type == "3d" ? "IMDbs25" : type, tree] }
-                .map { fam, type, tree -> [fam, type == "ML" ? "MLbs25" : type, tree] }
-                .set{replicates_25_ch}
-        }
-
-        if ( params.replicates_200 ) {
-            Channel
-                .fromPath(params.replicates_200)
-                .map { item -> [ item.baseName.split('_')[0],item.getParent().getBaseName().split('_')[0].strip(), item] }
-                .map { fam, type, tree -> [fam, type == "1d" ? "MEbs200" : type, tree] }
-                .map { fam, type, tree -> [fam, type == "3d" ? "IMDbs200" : type, tree] }
-                .map { fam, type, tree -> [fam, type == "ML" ? "MLbs200" : type, tree] }
-                .set{replicates_200_ch}
-        }
-
     
         // mix replicates
         replicates = replicates_25_ch.mix(replicates_200_ch)
@@ -73,11 +44,6 @@ workflow ANALYSIS{
 
         // Compute the splits
         compute_splits(ch_for_splits)
-
-        compute_splits.out.splits.view()
-
-        // IMD splits, ME splits, ML splits, IMB bs, ME bs, ML bs
-        
 
 
 }

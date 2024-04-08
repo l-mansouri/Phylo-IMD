@@ -4,11 +4,15 @@ library(gridExtra)
 library(RColorBrewer)
 
 # ---------------------------- MAIN ------------------------------------------------------------------
+setwd('/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis/')
 mtm=read.table('source_data/mTMalign_ME_untrimmed_saturation_correlations.txt', header=T)
 
 # mtmALIGN UNTRIMMED
 al="mTMalign"
 tr="untrimmed"
+
+# Square everything 
+mtm = mtm^2
 
 median_seq = round(median(mtm$COR1dme),3)
 median_imd = round(median(mtm$COR3dme),3)
@@ -54,9 +58,9 @@ p_sat1=ggplot(df111, aes(x=type, y=correlations, fill=type, col = type, alpha = 
           axis.ticks.y = element_line(color = "black")) +
     #geom_errorbar(linetype = "dashed")+
     geom_segment(aes(x = 0, xend = 0, y = 0, yend = 1), linetype = "solid", color = "black")+
-    annotate('text', x=df111$type[1], y=0.65, label=( paste("median =", median_seq)), vjust=1.7, col = "black", size = 3.5)+
-    annotate('text', x=df111$type[513], y=0.73, label=(paste("median =", median_tm)), vjust=1.7, col = "black", size = 3.5)+
-    annotate('text', x=df111$type[1025], y=0.73, label=(paste("median =", median_imd)), vjust=1.7, col = "black", size = 3.5)+
+    annotate('text', x=df111$type[1], y=0.4, label=( paste("median =", median_seq)), vjust=1.7, col = "black", size = 3.5)+
+    annotate('text', x=df111$type[513], y=0.53, label=(paste("median =", median_tm)), vjust=1.7, col = "black", size = 3.5)+
+    annotate('text', x=df111$type[1025], y=0.53, label=(paste("median =", median_imd)), vjust=1.7, col = "black", size = 3.5)+
   theme(panel.background = element_rect(fill = "transparent", color = NA))+ theme(plot.background = element_rect(color = NA))
 ggsave('plots/main/Fig1_correlation_input_patristic_mtmuntrimmed_508.png', plot=p_sat1, width = 6, height = 7, dpi = 300)
 

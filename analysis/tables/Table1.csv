@@ -1,4 +1,14 @@
-Method,Average BS,Congruence with Seq-ML trees,Congruence with Seq-ML trees (BS>=75),Seq-ML Shared branches (%),Seq-ML Shared branches (count),BS=100 Seq-ML Shared branches (count),BS=100 Seq-ML Shared branches (%)
-Seq-ME,43.47,0.67,0.87,67,5601,552,100
-TM-ME,NA,0.4,NA,39.75,3240,NA,NA
-IMD-ME,66.37,0.42,0.55,42.11,3416,1591,83.17
+aligner,trimming,method,Average BS,Congruence with Seq-ML trees,Congruence with Seq-ML trees (BS>=75),Seq-ML Shared branches (%),Seq-ML Shared branches (count),BS=100 Seq-ML Shared branches (count),BS=100 Seq-ML Shared branches (%)
+mTMalign,untrimmed,43.47,0.67,0.87,67,5601,552,100,Seq-ME
+mTMalign,untrimmed,66.37,0.42,0.55,42.11,3416,1591,83.17,IMD-ME
+mTMalign,untrimmed,NA,0.4,NA,39.75,3240,NA,NA,TM-ME
+mTMalign,trimmed,39,0.66,0.88,66.05,5384,397,100,Seq-ME1
+mTMalign,trimmed,61.3,0.38,0.52,37.54,2938,1239,82.05,IMD-ME1
+sap_tmalign,untrimmed,44.42,0.68,0.87,67.64,5532,608,100,Seq-ME2
+sap_tmalign,untrimmed,66.66,0.41,0.53,41.06,3249,1537,81.76,IMD-ME2
+sap_tmalign,trimmed,41.32,0.67,0.88,66.75,5398,467,100,Seq-ME3
+sap_tmalign,trimmed,63.18,0.39,0.52,38.72,2965,1286,81.24,IMD-ME3
+tcoffee,untrimmed,42.63,0.42,0.58,41.75,3431,562,75.74,Seq-ME4
+tcoffee,untrimmed,67.8,0.21,0.25,20.93,1643,851,43.07,IMD-ME4
+tcoffee,trimmed,40.82,0.67,0.88,67.15,5424,480,99.79,Seq-ME5
+tcoffee,trimmed,64.03,0.38,0.51,37.65,2866,1276,79.9,IMD-ME5
