@@ -6,7 +6,6 @@ include { GENERATE_SEQ_ME_TREES } from '../subworkflows/SEQ_ME_TREES.nf'
 include { GENERATE_SEQ_ML_TREES } from '../subworkflows/SEQ_ML_TREES.nf'
 include { GENERATE_IMD_ME_TITR_BS_TREES } from '../subworkflows/IMD_ME_TREES.nf'
 
-
 workflow 'titration_bootstrap_Phylo_IMD' {
     take:
         input_fasta
@@ -18,8 +17,8 @@ workflow 'titration_bootstrap_Phylo_IMD' {
             MTM_ALIGNMENT(input_fasta, templates, structures)
             alignment=MTM_ALIGNMENT.out.fasta_aln
             SELECTING_RANDOM_POSITIONS(MTM_ALIGNMENT.out.fasta_aln)
-            }
-        else if (params.align=='3dcoffee'){
+        }
+        else if (params.align=='sap_tmalign'){
             STM_ALIGNMENT(input_fasta, templates, structures)
             alignment=STM_ALIGNMENT.out.fasta_aln
             SELECTING_RANDOM_POSITIONS(STM_ALIGNMENT.out.fasta_aln)

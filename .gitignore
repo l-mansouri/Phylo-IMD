@@ -1,3 +1,5 @@
 work
 .nextflow*
 results
+analysis/source_data
+analysis/tables

@@ -25,8 +25,5 @@ if __name__ == '__main__':
     fastafile=sys.argv[1]
     matrixfile=sys.argv[2]
     outfile=sys.argv[3]
-# fastafile='mTMalign_matrix/PF00051_mTMalign.fa'
-# matrixfile='mTMalign_matrix/PF00051_mTMalign.matrix'
-# outfile='prova'
     ID=in_fasta(fastafile)
     in_mat(matrixfile,outfile, ID)

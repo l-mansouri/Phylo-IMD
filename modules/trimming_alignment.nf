@@ -1,6 +1,6 @@
 process 'trimming_aln' {
     tag"${id}"
-    publishDir "${params.output}/TRIMMED_fasta/", mode: 'copy', overwrite: true, pattern: "*.fa"
+    publishDir "${params.output}/${params.align}_trimmed_fasta/", mode: 'copy', overwrite: true, pattern: "*.fa"
     container 'lmansouri/phylo_imd_trimal:1.0'
 
     input:
@@ -11,6 +11,6 @@ process 'trimming_aln' {
     
     script:
     """
-        trimal -in ${fasta} -out ${id}_${params.align}_trimmal_aln.fa -automated1
+    trimal -in ${fasta} -out ${id}_${params.align}_${params.trimmer}.fa -automated1
     """
 }
