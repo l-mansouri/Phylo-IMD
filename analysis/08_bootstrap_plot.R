@@ -43,8 +43,8 @@ scatter_plot <- function(df, title = "", tag = list("A", "B")){
     coeff=100
 
     p1<- ggplot(df, aes(y=average_1d, x=average_3d, color=RF_3d_ME) ) + geom_point() + scale_color_gradient(low="red", high="blue")+
-        ylab('ME average bootstrap ')+
-        xlab('IMD average bootstrap ')+
+        ylab('ME average bootstrap support value')+
+        xlab('IMD average bootstrap support value')+
         labs(color='RF') +geom_abline(color='gray')+
         annotate('text', x=35, y=95, label=paste('R = ', C3dme,sep='')) +
         xlim(c(0,100))+ylim(c(0,100))+theme_light()+
@@ -69,8 +69,8 @@ scatter_plot <- function(df, title = "", tag = list("A", "B")){
 
 
     p2<- ggplot(df, aes(y=average_ML, x=average_3d, color=RF_3d_ML) ) + geom_point() + scale_color_gradient(low="red", high="blue")+
-        xlab('IMD average bootstrap')+
-        ylab('ML average bootstrap')+
+        xlab('IMD average bootstrap support value')+
+        ylab('ML average bootstrap support value')+
         labs(color='RF') +geom_abline(color='gray')+
         annotate('text', x=33, y=95, label=paste('R = ', C3dml,sep=''))+
         xlim(c(0,100))+ylim(c(0,100))+theme_light()+
@@ -132,7 +132,7 @@ plot_lines <- function(al,tr, folder, tag = list("","")){
   color2 = "#00BFC4"
   palette <-c(color1, color2)
   
-  PML=ggplot(dfML, aes(x=pos, y=frac_ok, color=type))+geom_line(size=1)+xlab('IMD average bootstrap')+labs(title = title)+scale_y_continuous(
+  PML=ggplot(dfML, aes(x=pos, y=frac_ok, color=type))+geom_line(size=1)+xlab('IMD average bootstrap suport value')+labs(title = title)+scale_y_continuous(
     name = 'Branches occurring in ML (%)', 
     sec.axis = sec_axis(~., name="Considered branches (%)"),
     limits=c(0,100),
@@ -151,7 +151,7 @@ plot_lines <- function(al,tr, folder, tag = list("","")){
     theme(plot.margin = margin(1, 1, 1, 1, "cm"))
     
   
-  PME=ggplot(dfME, aes(x=pos, y=frac_ok, color=type))+geom_line(size=1)+xlab('IMD average bootstrap')+labs(title = title)+scale_y_continuous(
+  PME=ggplot(dfME, aes(x=pos, y=frac_ok, color=type))+geom_line(size=1)+xlab('IMD average bootstrap support value')+labs(title = title)+scale_y_continuous(
     name = 'Branches occurring in ME (%)', 
     sec.axis = sec_axis(~., name="Considered branches (%)"),
     limits=c(0,100),
