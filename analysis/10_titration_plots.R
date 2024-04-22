@@ -38,12 +38,14 @@ plot_titration <- function(df, labels, palette =  c("#f8766d", "#00ba39", "#619c
 
 # Fig. 4A ( all families, experimental structures )
 df_exp_full=read.table ('source_data/titration_every_5_reference_branches_ME+3d+ML.txt')
-pexp= plot_titration(df_exp_full,c("Seq-ME", "IMD-ME", "Seq-ML")) 
+pexp= plot_titration(df_exp_full,c("ME", "IMD", "ML")) 
 #ggsave('plots/main/Fig4A_fraction_of_ref_branches_ME+3d+ML_avg_replicates.png', plot=pexp,  width = 7, height = 5.7, dpi = 300, units = "in")
 
 # Fig. 4B (families with AF2 )
 df_af2=read.table ('source_data/af2_pred_pdb_titration_every_5_reference_branches_ME+3d+ML.txt')
-paf2_only= plot_titration(df_af2,c("AF2 Seq-ME", "AF2 IMD-ME", "AF2 Seq-ML"), palette = c("#910f06","#0e8a00", "#040052")) 
+#paf2_only= plot_titration(df_af2,c("AF2 ME", "AF2 IMD", "AF2 ML"), palette = c("#910f06","#0e8a00", "#040052")) 
+paf2_only= plot_titration(df_af2,c("AF2 ME", "AF2 IMD", "AF2 ML")) 
+
 #ggsave('plots/main/Fig4B_AF2only_comparison_af2-exp_pdb_fraction_of_ref_branches_ME+3d+ML_avg_replicates.png', plot=paf2_only, width = 7, height = 5.7, dpi = 300, units = "in")
 
 # MAIN FIGURE 4 PANEL 
@@ -53,7 +55,7 @@ ggsave(paste('plots/',"main",'/Fig4_titration.png', sep = ""), plot=panel, width
 
 # SUPPLEMENTARY 
 df_3dcoffe = read.table('source_data/titration_every_5_reference_branches_ME+3d+ML_3DCOFFEE.txt')
-p3dcoffee= plot_titration(df_3dcoffe,c("Seq-ME", "IMD-ME", "Seq-ML")) 
+p3dcoffee= plot_titration(df_3dcoffe,c("ME", "IMD", "ML")) 
 p3dcoffee = p3dcoffee+ggtitle("Titration on 3D-Coffee MSAs")
 #ggsave('plots/main/titration_3dcoffee.png', plot=p3dcoffee, width = 7, height = 5.7, dpi = 300, units = "in")
 
@@ -67,7 +69,7 @@ colnames(df_af2)=c('ncol','avg1d', 'sd1d', 'avg3d', 'sd3d', 'avgML', 'sdML', 'x'
 DF=data.frame(n_o_col=c(df1$ncol, df1$ncol, df1$ncol, df_af2$ncol, df_af2$ncol, df_af2$ncol),
               avg_RF=c(df1$avg1d, df1$avg3d, df1$avgML, df_af2$avg1d, df_af2$avg3d, df_af2$avgML),
               sd_RF=c(df1$sd1d, df1$sd3d, df1$sdML, df_af2$sd1d, df_af2$sd3d, df_af2$sdML),
-              type=factor(rep(c("exp Seq-ME", "exp IMD-ME", "exp Seq-ML", "AF2 Seq-ME", "AF2 IMD-ME", "AF2 Seq-ML"), each=as.numeric(length(df1[,1]))), levels=c("exp Seq-ME",  "AF2 Seq-ME", "exp IMD-ME","AF2 IMD-ME", "exp Seq-ML", "AF2 Seq-ML"))
+              type=factor(rep(c("exp ME", "exp IMD", "exp ML", "AF2 ME", "AF2 IMD", "AF2 ML"), each=as.numeric(length(df1[,1]))), levels=c("exp ME",  "AF2 ME", "exp IMD","AF2 IMD", "exp ML", "AF2 ML"))
 )
 my_palette <- c("#f8766d", "#910f06", "#00ba39", "#0e8a00", "#619cff", "#040052")
 

@@ -11,7 +11,7 @@ source_data = "/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis
 output_dir = "/home/luisasantus/Desktop/crg_cluster/newphylo/NF_TMalign/mTMalign/titration_every_5_bootstrap_200_columns/split_files"
 
 # Read in the big AUC table
-path_auc_table = paste(source_data, "auc_complete_df_with_mcc_me.tsv", sep = "/")
+path_auc_table = paste(source_data, "auc_complete_df_with_mcc_small.tsv", sep = "/")
 auc_complete_df = read.table(path_auc_table, header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 
@@ -38,11 +38,15 @@ t3_data_grouped$mean_auc <- round(t3_data_grouped$mean_auc, 3)
 t3_data_grouped$ref <- factor(t3_data_grouped$ref, levels = col_order_ref)
 t3_data_grouped$bs_type <- factor(t3_data_grouped$bs_type, levels = col_order_bs)
 t3_matrix <- t3_data_grouped %>% spread(bs_type, mean_auc)
+t3_data_grouped
 # write the table to a file
 write.table(t3_matrix, file = paste(source_data, "../tables/Table3.csv", sep = "/"), sep = ",", quote = FALSE, row.names = FALSE)
 
+head(t3_data)
 
-
+# extract ME and ME +IMD bs_types on ref ME+ML 
+t3_data_ME_MEIMD <- t3_data[which(t3_data$ref == "ME+ML" & (t3_data$bs_type == "ME" | t3_data$bs_type == "ME+IMD")),]
+t3_data_ME_MEIMD
 # --------------------------------------------------
 #          SUPPLEMENTARY TABLE 4
 # --------------------------------------------------

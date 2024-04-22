@@ -17,12 +17,12 @@ mtm = mtm^2
 median_seq = round(median(mtm$COR1dme),3)
 median_imd = round(median(mtm$COR3dme),3)
 median_tm  = round(median(mtm$CORtmme),3)
-label_seq  = paste("Seq-ME \n (median: ",median_seq, ")", sep = "")
-label_imd  = paste("IMD-ME \n (median: ",median_imd, ")", sep = "")
-label_tm  = paste("TM-ME \n (median: ",median_tm, ")", sep = "")
-label_seq = "Seq-ME"
-label_tm = "TM-ME"
-label_imd = "IMD-ME"
+label_seq  = paste("ME \n (median: ",median_seq, ")", sep = "")
+label_imd  = paste("IMD \n (median: ",median_imd, ")", sep = "")
+label_tm  = paste("TM \n (median: ",median_tm, ")", sep = "")
+label_seq = "ME"
+label_tm = "TM"
+label_imd = "IMD"
 df111=data.frame(correlations=c(mtm$COR1dme, mtm$CORtmme, mtm$COR3dme),
     type=factor(rep(c(label_seq, label_tm, label_imd), each=length(mtm[,1])), levels=c(label_seq, label_tm, label_imd)))
 
@@ -92,8 +92,8 @@ plot_correlation_patristic <- function(al,tr, tag = ""){
   
   median_seq = round(median(mtm$COR1dme),3)
   median_imd = round(median(mtm$COR3dme),3)
-  label_seq  = paste("Seq-ME \n (median: ",median_seq, ")", sep = "")
-  label_imd  = paste("IMD-ME \n (median: ",median_imd, ")", sep = "")
+  label_seq  = paste("ME \n (median: ",median_seq, ")", sep = "")
+  label_imd  = paste("IMD \n (median: ",median_imd, ")", sep = "")
   
   df111=data.frame(correlations=c(mtm$COR1dme, mtm$COR3dme),
                    type=factor(rep(c(label_seq, label_imd), each=length(mtm[,1])), levels=c(label_seq, label_imd)))
