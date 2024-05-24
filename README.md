@@ -120,7 +120,7 @@ You can modify the default pipeline parameters by using:
 
 
 ## Overview of the repository
-For a more detailed overiview of the content of the repository please refer to [overview](https://github.com/l-mansouri/Phylo-IMD/blob/main/README.md)
+For a more detailed overiview of the content of the repository please refer to [overview](https://github.com/l-mansouri/Phylo-IMD/blob/main/Overview.md)
 
 
 ## Analysis
