@@ -2,31 +2,19 @@
 ## Boosting phylogenetic boostrap with structural information
 
 Multistrap is a toolkit for the computation and combination of phylogenetic bootstrap support values.
-It supports the computation of bootstrap support values using sequence and structural data and their subsequent combination.
+It computes bootstrap support values using sequence and structural data and their subsequent combination.
 Associated manuscript: "Boosting phylogenetic bootstrap with structural information" [10.5281/zenodo.7437267](https://zenodo.org/records/11187505).
 
-Available in the pipeline: 
-- Computation of multiple sequence alignment.
-  Available MSAs: [mTM-align](https://yanglab.qd.sdu.edu.cn/mTM-align/), [3D-Coffee](https://tcoffee.org/Projects/expresso/index.html) and [T-Coffee](https://github.com/cbcrg/tcoffee). 
-- (optional) Trimming of the multiple sequence alignment: 
-  Available: trimming with [trimAl](https://vicfero.github.io/trimal/). 
-- Computation of phylogenetic treees. 
-  Sequence based: ME trees (using [FastME](http://www.atgc-montpellier.fr/fastme/)), and ML trees (using [iQtree](http://www.iqtree.org/))
-  Structure based: IMD trees (using the **IMD** distance + [FastME](http://www.atgc-montpellier.fr/fastme/) as described in the manuscript).
-- Computation of bootstrap support values using: 
-  - Sequence data 
-  - Structure data 
-  - The combination of sequence and structure data
 
 ## Installation 
 
-# Requirements
+### Requirements
 - [Nextflow](https://www.nextflow.io/docs/latest/install.html) version >= 23.10.
 - Either [Docker](https://docs.docker.com/engine/install/) version >= 20.10 or [Singularity](https://docs.sylabs.io/guides/3.5/user-guide/quick_start.html#) version >= 3.7.
 
 Multistrap was tested on Scientific Linux release 7.2.
 
-# Get Multistrap
+### Get Multistrap
 Multistrap can be deployed as a Nextflow pipeline. 
 To obtain the source code, clone the multistrap repository by: 
 ```
@@ -36,15 +24,26 @@ cd Phylo-IMD
 On a normal Desktop computer this step should take seconds.
 Now you are ready to run Multistrap!
 
-### Overview of the repository
+## Run Multistrap
 
-The different processes are implemented as [modules](https://github.com/l-mansouri/Phylo-IMD/tree/main/modules) and the pipeline is composed by [subworkflows](https://github.com/l-mansouri/Phylo-IMD/tree/main/subworkflows) and [workflows](https://github.com/l-mansouri/Phylo-IMD/tree/main/workflows). All the workflows and subworkflows are orchestrated by the main script [main.nf](https://github.com/l-mansouri/Phylo-IMD/blob/main/main.nf).
+### DEMO: deploy multistrap on a test dataset
+To deploy multistrap on the provided test dataset: 
 
-For the sake of reproducibility and seamless deployment, each of the processes has an associated container. The associated dockerfiles available at [Dockerfiles](https://github.com/l-mansouri/Phylo-IMD/tree/main/Dockerfiles).
+`nextflow run main.nf -profile multistrap,test --seq_tree ME`
 
-An example of input files can be found in [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data).
+This will use the test [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data) to run multistrap. 
+We use --seq_tree ME as ML takes longer and this is meant to be just a basic test. 
 
-## Run MULTISTRAP on your dataset
+In a normal Desktop computer this should take ~10 minutes to complete. 
+
+#### Output
+This will produce a folder results: 
+ - the **MSAs** computed by mTM-align both in FASTA format (msas folder)
+ - the **Trees**  computed using your preferred sequence method (ME or ML) (trees/<ME|ML> folder) and the IMD trees (trees/IMD folder). **Tree replicates** are found in the replicates folder within the ME|ML|IMD folders respectively.
+ - the **Bootstrap support values** are stored as node labels in the trees found in multistrap_<ME|ML>_and_IMD folder. Here you will find one file with the tree with the <ME|ML> support values and one with the <IMD> bootstrap support values separatly and one with the multistrap support values.
+
+
+### Run MULTISTRAP on your dataset
 
 To obtain the combined bootstrap support values in your own dataset please use the multistrap profile as shown in the following lines. 
 To see how to properly prepare the input files, look into the example dataset in the [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data). 
@@ -52,6 +51,7 @@ To see how to properly prepare the input files, look into the example dataset in
 The command line: 
 
 `nextflow run main.nf -profile multistrap -fasta <id.fasta> -templates <id.template> -pdbs mypdbs/* -seq_tree <ML|ME>`
+
 
 ## Pipelines parameters 
 - Input parameters
@@ -75,22 +75,28 @@ Mulistrap per default will:
 - compute the IMD tree and corresponding bootstrap replicates
 - return the tree with the combined (multistrap) bootstrap support values
 
-### DEMO: deploy multistrap on a test dataset
-To deploy multistrap on the provided test dataset: 
 
-`nextflow run main.nf -profile multistrap,test --seq_tree ME`
 
-This will use the test [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data) to run multistrap. 
-We use --seq_tree ME as ML takes longer and this is meant to be just a basic test. 
+## Overview of the repository
 
-In a normal Desktop computer this should take ~10 minutes to complete. 
+The different processes are implemented as [modules](https://github.com/l-mansouri/Phylo-IMD/tree/main/modules) and the pipeline is composed by [subworkflows](https://github.com/l-mansouri/Phylo-IMD/tree/main/subworkflows) and [workflows](https://github.com/l-mansouri/Phylo-IMD/tree/main/workflows). All the workflows and subworkflows are orchestrated by the main script [main.nf](https://github.com/l-mansouri/Phylo-IMD/blob/main/main.nf).
 
-#### Output
-This will produce a folder results: 
- - the **MSAs** computed by mTM-align both in FASTA format (msas folder)
- - the **Trees**  computed using your preferred sequence method (ME or ML) (trees/<ME|ML> folder) and the IMD trees (trees/IMD folder). **Tree replicates** are found in the replicates folder within the ME|ML|IMD folders respectively.
- - the **Bootstrap support values** are stored as node labels in the trees found in multistrap_<ME|ML>_and_IMD folder. Here you will find one file with the tree with the <ME|ML> support values and one with the <IMD> bootstrap support values separatly and one with the multistrap support values.
+For the sake of reproducibility and seamless deployment, each of the processes has an associated container. The associated dockerfiles available at [Dockerfiles](https://github.com/l-mansouri/Phylo-IMD/tree/main/Dockerfiles).
 
+An example of input files can be found in [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data).
+
+Available in the pipeline: 
+- Computation of multiple sequence alignment.
+  Available MSAs: [mTM-align](https://yanglab.qd.sdu.edu.cn/mTM-align/), [3D-Coffee](https://tcoffee.org/Projects/expresso/index.html) and [T-Coffee](https://github.com/cbcrg/tcoffee). 
+- (optional) Trimming of the multiple sequence alignment: 
+  Available: trimming with [trimAl](https://vicfero.github.io/trimal/). 
+- Computation of phylogenetic treees. 
+  Sequence based: ME trees (using [FastME](http://www.atgc-montpellier.fr/fastme/)), and ML trees (using [iQtree](http://www.iqtree.org/))
+  Structure based: IMD trees (using the IMD distance + [FastME](http://www.atgc-montpellier.fr/fastme/) as described in the manuscript).
+- Computation of bootstrap support values using: 
+  - Sequence data 
+  - Structure data 
+  - The combination of sequence and structure data
 
 ## Analysis
 ### How to reproduce the results reported in the paper
