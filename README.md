@@ -22,7 +22,7 @@ sudo mv nextflow /usr/local/bin
 ```
 - Either [Docker](https://docs.docker.com/engine/install/) version >= 20.10 or [Singularity](https://docs.sylabs.io/guides/3.5/user-guide/quick_start.html#) version >= 3.7.
 
-** ! Remember to start Docker ** before starting the pipeline. 
+**! Remember to start Docker** before starting the pipeline. 
 
 Multistrap was tested on Scientific Linux release 7.2.
 
