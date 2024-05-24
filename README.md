@@ -37,19 +37,24 @@ Now you are ready to run Multistrap!
 
 ## Run Multistrap
 
-### On a test dataset
-To deploy multistrap on the provided test dataset using docker: 
-
-```nextflow run main.nf -profile multistrap,test,docker --seq_tree ME```
-
-or using singularity: 
-
-```nextflow run main.nf -profile multistrap,test,singularity --seq_tree ME```
+Mulistrap per default will: 
+- compute the mTMalign MSA
+- compute the sequence based tree and corresponding bootstrap replicates (ME or ML tree)
+- compute the IMD tree and corresponding bootstrap replicates
+- return the tree with the combined (multistrap) bootstrap support values
 
 
-This will use the test [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data) to run multistrap. 
-We use `--seq_tree ME` as ML takes longer and this is meant to be just a basic test. 
-In a normal Desktop computer this should take ~10 minutes to complete. 
+
+### On your dataset
+
+To obtain the combined bootstrap support values in your own dataset please use the multistrap profile as shown in the following lines. 
+To see how to properly prepare the input files, look into the example dataset in the [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data). 
+
+The command line: 
+
+```
+nextflow run main.nf -profile multistrap -fasta <id.fasta> -templates <id.template> -pdbs mypdbs/* -seq_tree <ML|ME>
+```
 
 <details markdown="1">
 <summary>Output files</summary>
@@ -60,101 +65,55 @@ In a normal Desktop computer this should take ~10 minutes to complete.
   - `multistrap_<ME|ML>_and_IMD/` the **Bootstrap support values** are stored as node labels in the trees found in multistrap_<ME|ML>_and_IMD folder. Here you will find one file with the tree with the <ME|ML> support values and one with the <IMD> bootstrap support values separatly and one with the multistrap support values.
   </details>
 
-### Run MULTISTRAP on your dataset
+### On a test dataset
+To deploy multistrap on the provided test dataset using docker: 
 
-To obtain the combined bootstrap support values in your own dataset please use the multistrap profile as shown in the following lines. 
-To see how to properly prepare the input files, look into the example dataset in the [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data). 
+```
+nextflow run main.nf -profile multistrap,test,docker --seq_tree ME
+```
 
-The command line: 
+or using singularity: 
 
-```nextflow run main.nf -profile multistrap -fasta <id.fasta> -templates <id.template> -pdbs mypdbs/* -seq_tree <ML|ME>```
+```
+nextflow run main.nf -profile multistrap,test,singularity --seq_tree ME
+```
+
+
+This will use the test [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data) to run multistrap. 
+We use `--seq_tree ME` as ML takes longer and this is meant to be just a basic test. 
+In a normal Desktop computer this should take ~10 minutes to complete. 
 
 
 ## Pipelines parameters 
 
 You can modify the default pipeline parameters by using: 
 
-- Input parameters
-    - `fasta` is a fasta file with the sequences you want to build the tree on. 
-    - `pdbs` is all the pdbs associated to the sequences present in your fasta file. 
-    - `templates` is a file with the explicit mapping of each sequence in your fasta file and each pdb you are providing.
-      The template files should follow the corresponding syntax (mTM-align or 3D-Coffee correspondingly). You can find examples for both in the data folder.
-- Parameters for tree computation:
-    - `seq_tree` determines the type of sequence based tree to be computed: either ME or ML. Default: ML. 
-    - `gammaRate` that determines the gamma rate for FastME tree reconstruction. Default: 1.0.
-    - `seedValue` that is the random seed for FastME tree reconstruction. Default: 5. 
-    - `replicatesNum` that determines the number of bootstrap replicates. Default: 100. 
-    - `tree_mode` that determines the distance mode to run the IMD distance matrix computation. Default: 10.
-- Output parameter:
-    - `output` that determines where to store the outputs that the pipeline publishes. Default: ./results.
 
+<details markdown="1">
+<summary>Parameters</summary>
 
-Mulistrap per default will: 
-- compute the mTMalign MSA
-- compute the sequence based tree and corresponding bootstrap replicates (ME or ML tree)
-- compute the IMD tree and corresponding bootstrap replicates
-- return the tree with the combined (multistrap) bootstrap support values
+  - Input parameters
+      - `fasta` is a fasta file with the sequences you want to build the tree on. 
+      - `pdbs` is all the pdbs associated to the sequences present in your fasta file. 
+      - `templates` is a file with the explicit mapping of each sequence in your fasta file and each pdb you are providing.
+        The template files should follow the corresponding syntax (mTM-align or 3D-Coffee correspondingly). You can find examples for both in the data folder.
+  - Parameters for tree computation:
+      - `seq_tree` determines the type of sequence based tree to be computed: either ME or ML. Default: ML. 
+      - `gammaRate` that determines the gamma rate for FastME tree reconstruction. Default: 1.0.
+      - `seedValue` that is the random seed for FastME tree reconstruction. Default: 5. 
+      - `replicatesNum` that determines the number of bootstrap replicates. Default: 100. 
+      - `tree_mode` that determines the distance mode to run the IMD distance matrix computation. Default: 10.
+  - Output parameter:
+      - `output` that determines where to store the outputs that the pipeline publishes. Default: ./results.
+</details>
 
 
 
 ## Overview of the repository
+For a more detailed overiview of the content of the repository please refer to [overview](https://github.com/l-mansouri/Phylo-IMD/blob/main/README.md)
 
-The different processes are implemented as [modules](https://github.com/l-mansouri/Phylo-IMD/tree/main/modules) and the pipeline is composed by [subworkflows](https://github.com/l-mansouri/Phylo-IMD/tree/main/subworkflows) and [workflows](https://github.com/l-mansouri/Phylo-IMD/tree/main/workflows). All the workflows and subworkflows are orchestrated by the main script [main.nf](https://github.com/l-mansouri/Phylo-IMD/blob/main/main.nf).
-
-For the sake of reproducibility and seamless deployment, each of the processes has an associated container. The associated dockerfiles available at [Dockerfiles](https://github.com/l-mansouri/Phylo-IMD/tree/main/Dockerfiles).
-
-An example of input files can be found in [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data).
-
-Available in the pipeline: 
-- Computation of multiple sequence alignment.
-  Available MSAs: [mTM-align](https://yanglab.qd.sdu.edu.cn/mTM-align/), [3D-Coffee](https://tcoffee.org/Projects/expresso/index.html) and [T-Coffee](https://github.com/cbcrg/tcoffee). 
-- (optional) Trimming of the multiple sequence alignment: 
-  Available: trimming with [trimAl](https://vicfero.github.io/trimal/). 
-- Computation of phylogenetic treees. 
-  Sequence based: ME trees (using [FastME](http://www.atgc-montpellier.fr/fastme/)), and ML trees (using [iQtree](http://www.iqtree.org/))
-  Structure based: IMD trees (using the IMD distance + [FastME](http://www.atgc-montpellier.fr/fastme/) as described in the manuscript).
-- Computation of bootstrap support values using: 
-  - Sequence data 
-  - Structure data 
-  - The combination of sequence and structure data
 
 ## Analysis
-### How to reproduce the results reported in the paper
 
 In the paper we perform an extensive benchmark and produce accessory analyses to assess the robustness and validity of Multistrap. 
-
-You can get the input data for the full dataset at: [https://zenodo.org/records/7447443](https://zenodo.org/records/7447443)
-
-We hereby provide the command lines necessary to reproduce the reported results. To run it on the real dataset, please download it and update the path of fasta, templates and pdb with the path you download the data to. 
-
-To run the main analysis present in the paper (uses untrimmed mTM-align MSAs to produce ME, ML and IMD trees):
-```nextflow run main.nf -profile untrimmed_mTM```
-
-To modify the aligner or trimming to use you can do it with the following parameters: 
-  - `align` that determines the alignment method to use. It can be `mTMalign`, `sap_tmalign`, `tcoffee`
-  - `trimmer` that determined the type of trimming of the alignment. It can be `untrimmed` or `trimmal`
-
-To run the titration, you should run the pipeline like:
-
-```nextflow run main.nf -profile titration```
-
-To run bootstrap on titration trees:
-
-```nextflow run main.nf -profile titration_bootstrap```
-
-To compute extra statistics needed for the complete analysis shown in the paper, such as the calculation of NiRMSD, you can use the profile analysis.
-
-```nextflow run main.nf -profile analysis -msas <id.aln> -templates <id.template> -pdbs my_pdbs/*```
-
-The scripts to reproduce the figures and tables in the manuscript are available in the [analysis](https://github.com/l-mansouri/Phylo-IMD/tree/main/analysis) folder. 
-
-The pipeline includes additional profiles that set default parameters values: 
-- `untrimmed_mTM` that runs the standard analysis with the **mTMalign untrimmed** alignment
-- `trimmed_mTM` that runs the standard analysis with the **mTMalign** alignment trimmed by using **trimal**
-- `untrimmed_3dc` that runs the standard analysis with the **3d-coffee untrimmed** alignment
-- `trimmed_3dc` that runs the standard analysis with the **3d-coffee** alignment trimmed by using **trimal**
-- `untrimmed_tc` that runs the standard analysis with the **t-coffee untrimmed** alignment
-- `trimmed_tc` that runs the standard analysis with the **t-coffee** alignment trimmed by using **trimal**
-- `titration` that runs the titration analysis present in the paper; by default, it computes and uses **untrimmed mTMalign** alignment; if you wish to change the alignment method, you would have to change the `align` parameter and the input paths `fasta` and `template`
-- `titration_bootstrap` that runs the bootstrap for the titration-based trees; by default, it computes and uses **untrimmed mTMalign** alignment; if you wish to change the alignment method, you would have to change the `align` and the input paths `fasta` and `template`
-
+For more information on how to reproduce this please refer to [analysis](https://github.com/l-mansouri/Phylo-IMD/blob/main/Analysis.md)
