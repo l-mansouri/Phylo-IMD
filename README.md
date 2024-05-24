@@ -56,6 +56,11 @@ The command line:
 nextflow run main.nf -profile multistrap -fasta <id.fasta> -templates <id.template> -pdbs mypdbs/* -seq_tree <ML|ME>
 ```
 
+- `fasta` is a fasta file with the sequences you want to build the tree on. 
+- `pdbs` is all the pdbs associated to the sequences present in your fasta file. 
+- `templates` is a file with the explicit mapping of each sequence in your fasta file and each pdb you are providing.
+  The template files should follow the corresponding syntax (mTM-align or 3D-Coffee correspondingly). You can find examples for both in the data folder.
+
 <details markdown="1">
 <summary>Output files</summary>
 
