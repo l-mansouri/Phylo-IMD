@@ -18,12 +18,13 @@ workflow MULTISTRAP{
 
         // Compute IMD trees and bootstrap
         GENERATE_IMD_ME_TREES(MTM_ALIGNMENT.out.fasta_aln, templates, structures)
-        MERGE_REPLICATES(GENERATE_IMD_ME_TREES.out.tree.groupTuple())
-        MERGE_REPLICATES.out.replicates.map{
-            id, tree, replicates  -> [id.replaceAll("_.*", ""), tree, replicates]
-        }.set{IMD_TREE_AND_REPLICATES}
+        MERGE_REPLICATES(GENERATE_IMD_ME_TREES.out.replicates.groupTuple())
+        GENERATE_IMD_ME_TREES.out.tree.combine(MERGE_REPLICATES.out.replicates, by:0)
+                                    .map{
+                                        id, tree, replicates  -> [id.replaceAll("_.*", ""), tree, replicates]
+                                    }.set{IMD_TREE_AND_REPLICATES}
 
-        // Compute sequence_based trees and bootsrap
+        // // Compute sequence_based trees and bootsrap
         if (params.seq_tree=='ME'){
             GENERATE_SEQ_ME_TREES(MTM_ALIGNMENT.out.fasta_aln)
             SEQ_TREE_AND_REPLICATES = GENERATE_SEQ_ME_TREES.out.tree.combine(GENERATE_SEQ_ME_TREES.out.replicates, by:0)

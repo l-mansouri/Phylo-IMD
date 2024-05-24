@@ -1,7 +1,6 @@
 process 'tcoffee_alignment' {
     
     tag"${id}"
-    storeDir "${params.output}/${params.align}_fasta/$id"
     container 'lmansouri/phylo_imd_tcoffee:1.0'
 
 

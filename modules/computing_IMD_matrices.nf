@@ -1,8 +1,6 @@
 process 'computing_IMD_matrices' {
- //errorStrategy 'ignore'
   tag"${id}"
   container 'lmansouri/phylo_imd_tcoffee:1.0'
-
 
   input:
     tuple val(id), path(fasta), path(template), path(pdb)

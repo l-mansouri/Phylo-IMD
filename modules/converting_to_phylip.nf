@@ -1,6 +1,5 @@
 process 'converting_to_phylip' {
   tag"${id}"
-  publishDir "${params.output}/${params.align}_${params.trimmer}_ph", mode: 'copy', overwrite: true
   container 'lmansouri/phylo_imd_tcoffee:1.0'
 
   input:

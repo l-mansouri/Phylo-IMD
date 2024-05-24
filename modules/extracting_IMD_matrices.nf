@@ -1,7 +1,5 @@
 process 'extracting_matrices' {
    tag"${id}"
-   publishDir "${params.output}/${params.align}_3d_ME_${params.trimmer}_matrix/", mode: 'copy', overwrite: true, pattern: "*.matrix"
-   publishDir "${params.output}/${params.align}_3d_ME_${params.trimmer}_matrix/replicates", mode: 'copy', overwrite: true, pattern: "*.txt"
    container 'lmansouri/phylo_imd_base:1.0'
 
 

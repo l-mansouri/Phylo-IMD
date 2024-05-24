@@ -2,8 +2,7 @@ process 'mTMalign_alignment' {
 
   container 'lmansouri/phylo_imd_mtmalign:1.0'
   tag "${id}"
-  publishDir "${params.output}/${params.align}_fasta/$id", pattern: "*.fa", overwrite: false
-  publishDir "${params.output}/mTMalign_matrix/$id", pattern: "*.matrix", overwrite: false
+
 
   input:
     tuple val(id), path(inputs), path(pdb)

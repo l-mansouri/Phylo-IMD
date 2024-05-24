@@ -1,6 +1,5 @@
 process computing_splitfiles {
   tag "${id}_${type}"
-  publishDir "${params.output}/split_files/${type}/", mode: 'copy', overwrite: true
   container 'lmansouri/phylo_imd_tcoffee:1.0'
 
   input:

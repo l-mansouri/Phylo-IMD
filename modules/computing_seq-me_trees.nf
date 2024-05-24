@@ -1,8 +1,6 @@
 process 'computing_Seq_ME_trees' {
 
     tag"${id}"
-    publishDir "${params.output}/${params.align}_ME_${params.trimmer}_trees/", mode: 'copy', overwrite: true, pattern: "*.nwk"
-    publishDir "${params.output}/${params.align}_ME_${params.trimmer}_trees/replicates", mode: 'copy', overwrite: true, pattern: "*.replicates"
     container 'lmansouri/phylo_imd_fastme:1.0'
 
     input:
@@ -25,7 +23,6 @@ process 'computing_Seq_ME_trees' {
 process 'computing_Seq_ME_trees_no_bs' {
 
     tag"${id}"
-    publishDir "${params.output}/${params.align}_ME_${params.trimmer}_matrix/", mode: 'copy', overwrite: true, pattern: "*.matrix"
     container 'lmansouri/phylo_imd_fastme:1.0'
 
 

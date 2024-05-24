@@ -39,7 +39,6 @@ bs_first <- compute_bs_support(first_topology, first_replicates, args$bs1)
 # Compute second bootstrap support 
 bs_second <- compute_bs_support(second_topology, second_replicates, args$bs2)
 
-
 #-------------------------------------------------------------------------------
 #                   COMPUTE MULTISTRAP
 #-------------------------------------------------------------------------------

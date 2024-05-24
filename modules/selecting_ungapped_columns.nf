@@ -1,6 +1,5 @@
 process 'removing_gaps'{
     tag "${id}"
-    publishDir "${params.output}/UNGAPPED_5_fasta/", mode: 'copy', overwrite: true, pattern: "*.fa"
     container 'lmansouri/phylo_imd_tcoffee:1.0'
 
 
