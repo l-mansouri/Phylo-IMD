@@ -22,6 +22,8 @@ sudo mv nextflow /usr/local/bin
 ```
 - Either [Docker](https://docs.docker.com/engine/install/) version >= 20.10 or [Singularity](https://docs.sylabs.io/guides/3.5/user-guide/quick_start.html#) version >= 3.7.
 
+** ! Remember to start Docker ** before starting the pipeline. 
+
 Multistrap was tested on Scientific Linux release 7.2.
 
 ### Get Multistrap
@@ -37,12 +39,31 @@ Now you are ready to run Multistrap!
 
 ## Run Multistrap
 
-Mulistrap per default will: 
+Multistrap per default will: 
 - compute the mTMalign MSA
 - compute the sequence based tree and corresponding bootstrap replicates (ME or ML tree)
 - compute the IMD tree and corresponding bootstrap replicates
 - return the tree with the combined (multistrap) bootstrap support values
 
+
+### On a test dataset
+
+```
+nextflow run main.nf -profile multistrap,test,docker --seq_tree ME
+```
+
+If you want to use singularity: 
+
+```
+nextflow run main.nf -profile multistrap,test,singularity --seq_tree ME
+```
+<details markdown="1">
+<summary>More</summary>
+
+This will use the test [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data) to run multistrap. 
+We use `--seq_tree ME` as ML takes longer and this is meant to be just a basic test. 
+In a normal Desktop computer this should take ~10 minutes to complete. 
+</details>
 
 
 ### On your dataset
@@ -70,23 +91,7 @@ nextflow run main.nf -profile multistrap -fasta <id.fasta> -templates <id.templa
   - `multistrap_<ME|ML>_and_IMD/` the **Bootstrap support values** are stored as node labels in the trees found in multistrap_<ME|ML>_and_IMD folder. Here you will find one file with the tree with the <ME|ML> support values and one with the <IMD> bootstrap support values separatly and one with the multistrap support values.
   </details>
 
-### On a test dataset
-To deploy multistrap on the provided test dataset using docker: 
 
-```
-nextflow run main.nf -profile multistrap,test,docker --seq_tree ME
-```
-
-or using singularity: 
-
-```
-nextflow run main.nf -profile multistrap,test,singularity --seq_tree ME
-```
-
-
-This will use the test [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data) to run multistrap. 
-We use `--seq_tree ME` as ML takes longer and this is meant to be just a basic test. 
-In a normal Desktop computer this should take ~10 minutes to complete. 
 
 
 ## Pipelines parameters 
