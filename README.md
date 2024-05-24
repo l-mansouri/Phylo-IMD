@@ -3,7 +3,7 @@
 [![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)
 [![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
 [![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
-[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.7437267)
+[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.7437267-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.7437267)
 
 Multistrap is a toolkit designed to calculate and combine phylogenetic bootstrap support values. It generates these support values using both sequence and structural data, and then combines them. 
 
@@ -37,25 +37,28 @@ Now you are ready to run Multistrap!
 
 ## Run Multistrap
 
-### DEMO: deploy multistrap on a test dataset
+### On a test dataset
 To deploy multistrap on the provided test dataset using docker: 
 
-`nextflow run main.nf -profile multistrap,test,docker --seq_tree ME`
+```nextflow run main.nf -profile multistrap,test,docker --seq_tree ME```
 
-To deploy multistrap on the provided test dataset using singularity: 
-`nextflow run main.nf -profile multistrap,test,singularity --seq_tree ME`
+or using singularity: 
+
+```nextflow run main.nf -profile multistrap,test,singularity --seq_tree ME```
 
 
 This will use the test [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data) to run multistrap. 
-We use --seq_tree ME as ML takes longer and this is meant to be just a basic test. 
+We use `--seq_tree ME` as ML takes longer and this is meant to be just a basic test. 
 In a normal Desktop computer this should take ~10 minutes to complete. 
 
-#### Output
-This will produce a folder results: 
- - the **MSAs** computed by mTM-align both in FASTA format (msas folder)
- - the **Trees**  computed using your preferred sequence method (ME or ML) (trees/<ME|ML> folder) and the IMD trees (trees/IMD folder). **Tree replicates** are found in the replicates folder within the ME|ML|IMD folders respectively.
- - the **Bootstrap support values** are stored as node labels in the trees found in multistrap_<ME|ML>_and_IMD folder. Here you will find one file with the tree with the <ME|ML> support values and one with the <IMD> bootstrap support values separatly and one with the multistrap support values.
+<details markdown="1">
+<summary>Output files</summary>
 
+- `results/`
+  - `msas/*.fa`: **alignment** files. 
+  - `trees/`:  **trees** computed using your preferred sequence method (ME or ML) (trees/<ME|ML> folder) and the IMD trees (trees/IMD folder). **Tree replicates** are found in the replicates folder within the ME|ML|IMD folders respectively.
+  - `multistrap_<ME|ML>_and_IMD/` the **Bootstrap support values** are stored as node labels in the trees found in multistrap_<ME|ML>_and_IMD folder. Here you will find one file with the tree with the <ME|ML> support values and one with the <IMD> bootstrap support values separatly and one with the multistrap support values.
+  </details>
 
 ### Run MULTISTRAP on your dataset
 
@@ -64,10 +67,13 @@ To see how to properly prepare the input files, look into the example dataset in
 
 The command line: 
 
-`nextflow run main.nf -profile multistrap -fasta <id.fasta> -templates <id.template> -pdbs mypdbs/* -seq_tree <ML|ME>`
+```nextflow run main.nf -profile multistrap -fasta <id.fasta> -templates <id.template> -pdbs mypdbs/* -seq_tree <ML|ME>```
 
 
 ## Pipelines parameters 
+
+You can modify the default pipeline parameters by using: 
+
 - Input parameters
     - `fasta` is a fasta file with the sequences you want to build the tree on. 
     - `pdbs` is all the pdbs associated to the sequences present in your fasta file. 
@@ -75,12 +81,12 @@ The command line:
       The template files should follow the corresponding syntax (mTM-align or 3D-Coffee correspondingly). You can find examples for both in the data folder.
 - Parameters for tree computation:
     - `seq_tree` determines the type of sequence based tree to be computed: either ME or ML. Default: ML. 
-    - `gammaRate` that determines the gamma rate for FastME tree reconstruction
-    - `seedValue` that is the random seed for FastME tree reconstruction
-    - `replicatesNum` that determines the number of bootstrap replicates
-    - `tree_mode` that determines the distance mode to run the IMD distance matrix computation, default is 10.
+    - `gammaRate` that determines the gamma rate for FastME tree reconstruction. Default: 1.0.
+    - `seedValue` that is the random seed for FastME tree reconstruction. Default: 5. 
+    - `replicatesNum` that determines the number of bootstrap replicates. Default: 100. 
+    - `tree_mode` that determines the distance mode to run the IMD distance matrix computation. Default: 10.
 - Output parameter:
-    - `output` that determines where to store the outputs that the pipeline publishes
+    - `output` that determines where to store the outputs that the pipeline publishes. Default: ./results.
 
 
 Mulistrap per default will: 
@@ -119,24 +125,26 @@ In the paper we perform an extensive benchmark and produce accessory analyses to
 
 You can get the input data for the full dataset at: [https://zenodo.org/records/7447443](https://zenodo.org/records/7447443)
 
-We hereby provide the command lines necessary to reproduce the reported results:
+We hereby provide the command lines necessary to reproduce the reported results. To run it on the real dataset, please download it and update the path of fasta, templates and pdb with the path you download the data to. 
 
 To run the main analysis present in the paper (uses untrimmed mTM-align MSAs to produce ME, ML and IMD trees):
-`nextflow run main.nf -profile untrimmed_mTM`
+```nextflow run main.nf -profile untrimmed_mTM```
 
 To modify the aligner or trimming to use you can do it with the following parameters: 
   - `align` that determines the alignment method to use. It can be `mTMalign`, `sap_tmalign`, `tcoffee`
   - `trimmer` that determined the type of trimming of the alignment. It can be `untrimmed` or `trimmal`
 
 To run the titration, you should run the pipeline like:
-`nextflow run main.nf -profile titration`
+
+```nextflow run main.nf -profile titration```
 
 To run bootstrap on titration trees:
-`nextflow run main.nf -profile titration_bootstrap`
+
+```nextflow run main.nf -profile titration_bootstrap```
 
 To compute extra statistics needed for the complete analysis shown in the paper, such as the calculation of NiRMSD, you can use the profile analysis.
 
-`nextflow run main.nf -profile analysis -msas <id.aln> -templates <id.template> -pdbs my_pdbs/*`
+```nextflow run main.nf -profile analysis -msas <id.aln> -templates <id.template> -pdbs my_pdbs/*```
 
 The scripts to reproduce the figures and tables in the manuscript are available in the [analysis](https://github.com/l-mansouri/Phylo-IMD/tree/main/analysis) folder. 
 
