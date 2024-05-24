@@ -1,25 +1,36 @@
 # MULTISTRAP
 ## Boosting phylogenetic boostrap with structural information
+[![Nextflow](https://img.shields.io/badge/nextflow%20DSL2-%E2%89%A523.04.0-23aa62.svg)](https://www.nextflow.io/)
+[![run with docker](https://img.shields.io/badge/run%20with-docker-0db7ed?labelColor=000000&logo=docker)](https://www.docker.com/)
+[![run with singularity](https://img.shields.io/badge/run%20with-singularity-1d355c.svg?labelColor=000000)](https://sylabs.io/docs/)
+[![Cite with Zenodo](http://img.shields.io/badge/DOI-10.5281/zenodo.XXXXXXX-1073c8?labelColor=000000)](https://doi.org/10.5281/zenodo.7437267)
 
-Multistrap is a toolkit for the computation and combination of phylogenetic bootstrap support values.
-It computes bootstrap support values using sequence and structural data and their subsequent combination.
-Associated manuscript: "Boosting phylogenetic bootstrap with structural information" [10.5281/zenodo.7437267](https://zenodo.org/records/11187505).
+Multistrap is a toolkit designed to calculate and combine phylogenetic bootstrap support values. It generates these support values using both sequence and structural data, and then combines them. 
+
+For more details, see the associated manuscript: ["Boosting phylogenetic bootstrap with structural information"](https://zenodo.org/records/11187505).
 
 
 ## Installation 
 
 ### Requirements
 - [Nextflow](https://www.nextflow.io/docs/latest/install.html) version >= 23.10.
+```
+curl -s https://get.nextflow.io | bash
+chmod +x nextflow
+# /usr/local/bin or any other executable path
+sudo mv nextflow /usr/local/bin
+```
 - Either [Docker](https://docs.docker.com/engine/install/) version >= 20.10 or [Singularity](https://docs.sylabs.io/guides/3.5/user-guide/quick_start.html#) version >= 3.7.
 
 Multistrap was tested on Scientific Linux release 7.2.
 
 ### Get Multistrap
-Multistrap can be deployed as a Nextflow pipeline. 
-To obtain the source code, clone the multistrap repository by: 
+Multistrap is distributed as a Nextflow pipeline. 
+To obtain the source code: 
 ```
-git clone git@github.com:l-mansouri/Phylo-IMD.git
-cd Phylo-IMD
+wget https://github.com/l-mansouri/Phylo-IMD/archive/refs/heads/main.zip
+unzip main.zip
+cd Phylo-IMD-main
 ```
 On a normal Desktop computer this step should take seconds.
 Now you are ready to run Multistrap!
@@ -27,13 +38,16 @@ Now you are ready to run Multistrap!
 ## Run Multistrap
 
 ### DEMO: deploy multistrap on a test dataset
-To deploy multistrap on the provided test dataset: 
+To deploy multistrap on the provided test dataset using docker: 
 
-`nextflow run main.nf -profile multistrap,test --seq_tree ME`
+`nextflow run main.nf -profile multistrap,test,docker --seq_tree ME`
+
+To deploy multistrap on the provided test dataset using singularity: 
+`nextflow run main.nf -profile multistrap,test,singularity --seq_tree ME`
+
 
 This will use the test [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data) to run multistrap. 
 We use --seq_tree ME as ML takes longer and this is meant to be just a basic test. 
-
 In a normal Desktop computer this should take ~10 minutes to complete. 
 
 #### Output
