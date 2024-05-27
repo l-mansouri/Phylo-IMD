@@ -15,13 +15,13 @@ For more details, see the associated manuscript: ["Boosting phylogenetic bootstr
 ### Requirements
 - [Nextflow](https://www.nextflow.io/docs/latest/install.html) version >= 23.10.
   
-  Make sure you have the [right Java version installed](https://stackoverflow.com/questions/74103638/how-do-i-install-the-correct-version-of-java-for-nextflow) 
+  Make sure you have the [right Java version installed](https://stackoverflow.com/questions/74103638/how-do-i-install-the-correct-version-of-java-for-nextflow). Instructions [here](https://www.nextflow.io/docs/latest/install.html).
 ```
 curl -s https://get.nextflow.io | bash
 chmod +x nextflow
-# /usr/local/bin or any other executable path
 sudo mv nextflow /usr/local/bin
 ```
+
 - Either [Docker](https://docs.docker.com/engine/install/) version >= 20.10 or [Singularity](https://docs.sylabs.io/guides/3.5/user-guide/quick_start.html#) version >= 3.7.
 
 **! Remember to start Docker** before starting the pipeline. 
@@ -36,6 +36,14 @@ curl -L -o main.zip https://github.com/l-mansouri/Phylo-IMD/archive/refs/heads/m
 unzip main.zip
 cd Phylo-IMD-main
 ```
+
+or alternatively you can use wget: 
+```
+wget https://github.com/l-mansouri/Phylo-IMD/archive/refs/heads/main.zip 
+unzip main.zip
+cd Phylo-IMD-main
+```
+
 On a normal Desktop computer this step should take seconds.
 Now you are ready to run Multistrap!
 
