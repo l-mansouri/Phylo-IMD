@@ -14,6 +14,8 @@ For more details, see the associated manuscript: ["Boosting phylogenetic bootstr
 
 ### Requirements
 - [Nextflow](https://www.nextflow.io/docs/latest/install.html) version >= 23.10.
+  
+  Make sure you have the [right Java version installed](https://stackoverflow.com/questions/74103638/how-do-i-install-the-correct-version-of-java-for-nextflow) 
 ```
 curl -s https://get.nextflow.io | bash
 chmod +x nextflow
