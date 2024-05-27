@@ -49,19 +49,20 @@ Multistrap per default will:
 ### On a test dataset
 
 ```
-nextflow run main.nf -profile multistrap,test,docker --seq_tree ME
+nextflow run main.nf -profile multistrap,test,docker
 ```
 
 If you want to use singularity: 
 
 ```
-nextflow run main.nf -profile multistrap,test,singularity --seq_tree ME
+nextflow run main.nf -profile multistrap,test,singularity
 ```
 <details markdown="1">
 <summary>More</summary>
 
 This will use the test [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data) to run multistrap. 
-We use `--seq_tree ME` as ML takes longer and this is meant to be just a basic test. 
+We use `--seq_tree ME` as ML takes longer and this is meant to be just a basic test.
+`replicatesNum` is also set to 10, to speed up the run.
 In a normal Desktop computer this should take ~10 minutes to complete. 
 </details>
 
