@@ -53,7 +53,14 @@ Multistrap per default will:
 - compute the mTMalign MSA
 - compute the sequence based tree and corresponding bootstrap replicates (ME or ML tree)
 - compute the IMD tree and corresponding bootstrap replicates
-- return the tree with the combined (multistrap) bootstrap support values
+- return:
+  -  the ME (or ML) tree with:
+      - the combined (multistrap) bootstrap support values
+      - the sequence based support values
+      - the IMD support values
+  -  the IMD tree with the IMD support values
+
+Please refer to the output section for a precise description of the output file naming.
 
 
 ### On a test dataset
@@ -96,10 +103,16 @@ nextflow run main.nf -profile multistrap -fasta <id.fasta> -templates <id.templa
 <details markdown="1">
 <summary>Output files</summary>
 
-- `results/`
+- `results/dataset_id`
   - `msas/*.fa`: **alignment** files. 
-  - `trees/`:  **trees** computed using your preferred sequence method (ME or ML) (trees/<ME|ML> folder) and the IMD trees (trees/IMD folder). **Tree replicates** are found in the replicates folder within the ME|ML|IMD folders respectively.
-  - `multistrap_<ME|ML>_and_IMD/` the **Bootstrap support values** are stored as node labels in the trees found in multistrap_<ME|ML>_and_IMD folder. Here you will find one file with the tree with the <ME|ML> support values and one with the <IMD> bootstrap support values separatly and one with the multistrap support values.
+  - `tree_replicates/`:  **trees** computed using your preferred sequence method (ME or ML) (trees/<ME|ML> folder) and the IMD trees (trees/IMD folder). **Tree replicates** are found in the replicates folder within the ME|ML|IMD folders respectively.
+  - `tree_supports/` the **Bootstrap support values** are stored as node labels in the trees found in tree_supports folder.
+  Here you will find one folder with:
+    - the trees with the <ME|ML> topology and the <ME|ML> support values (ID_ME|ML_tree_ME|ML_bs.nwk)
+    - the IMD support values (ID_ME|ML_tree_IMD_bs.nwk)
+    - the multistrap support values (ID_ME|ML_tree_multistrap_bs.nwk).
+    
+    Additionally, you will find the IMD folder, with the IMD tree with the IMD bootstrap support values (ID_IMD_tree_IMD_bs.nwk).
   </details>
 
 
