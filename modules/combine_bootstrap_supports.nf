@@ -15,9 +15,9 @@ process 'COMBINE_BOOTSTRAP_SUPPORTS' {
                                        --r1 ${replicates_1}\
                                        --t2 ${tree_2}\
                                        --r2 ${replicates_2}\
-                                       --bs1 ${id}_${params.seq_tree}_tree_${params.seq_tree}bs.nwk\
-                                       --bs2 ${id}_IMD_bs.nwk\
-                                       --bs3 ${id}_${params.seq_tree}_multistrap_bs.nwk \
-                                       --o ${id}_multistrap_bs.nwk
+                                       --bs1 ${id}_${params.seq_tree}_tree_${params.seq_tree}_bs.nwk\
+                                       --bs2 ${id}_IMD_tree_IMD_bs.nwk\
+                                       --bs3 ${id}_${params.seq_tree}_tree_IMD_bs.nwk \
+                                       --o ${id}_${params.seq_tree}_tree_multistrap_bs.nwk
   """
 }
