@@ -11,7 +11,7 @@ def import_msa(msa_file):
             i=i.rstrip()
             if len(i)>1:
                 if i[0]=='>':
-                    ID=i[1]
+                    ID=i[1:]
                     lid.append(ID)
                     continue
                 msa[ID]=msa.get(ID,'')+i
