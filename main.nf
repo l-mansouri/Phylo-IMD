@@ -33,7 +33,7 @@ workflow PHYLO_IMD{
     //log info
 
     log.info """\
-    PHYLO-IMD - version 1.0
+    MULTISTRAP - version 1.0
     ====================================
     General parameters:
     -------------------
@@ -50,8 +50,8 @@ workflow PHYLO_IMD{
 
     Input data:
     -----------
-    Input (FASTA or input list)		        : ${params.fasta}
-    Input template file		                : ${params.templates}
+    Input (FASTA or input list)             : ${params.fasta}
+    Input template file                     : ${params.templates}
     Input structures (PDBs)                 : ${params.pdb}
 
     Output folder:                          : ${params.output}

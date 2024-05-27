@@ -62,7 +62,7 @@ nextflow run main.nf -profile multistrap,test,singularity --seq_tree ME
 
 This will use the test [data](https://github.com/l-mansouri/Phylo-IMD/tree/main/data) to run multistrap. 
 We use `--seq_tree ME` as ML takes longer and this is meant to be just a basic test. 
-In a normal Desktop computer this should take ~10 minutes to complete. 
+In a normal Desktop computer this should take ~2 minutes to complete. 
 </details>
 
 
