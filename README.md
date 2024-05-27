@@ -32,7 +32,7 @@ Multistrap was tested on Scientific Linux release 7.2.
 Multistrap is distributed as a Nextflow pipeline. 
 To obtain the source code: 
 ```
-wget https://github.com/l-mansouri/Phylo-IMD/archive/refs/heads/main.zip
+curl -L -o main.zip https://github.com/l-mansouri/Phylo-IMD/archive/refs/heads/main.zip 
 unzip main.zip
 cd Phylo-IMD-main
 ```
