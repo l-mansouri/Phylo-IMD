@@ -105,7 +105,7 @@ nextflow run main.nf -profile multistrap -fasta <id.fasta> -templates <id.templa
 
 - `results/dataset_id`
   - `msas/*.fa`: **alignment** files. 
-  - `tree_replicates/`:  **trees** computed using your preferred sequence method (ME or ML) (trees/<ME|ML> folder) and the IMD trees (trees/IMD folder). **Tree replicates** are found in the replicates folder within the ME|ML|IMD folders respectively.
+  - `trees_and_replicates/`:  **trees** computed using your preferred sequence method (ME or ML) (trees/<ME|ML> folder) and the IMD trees (trees/IMD folder). **Tree replicates** are found in the replicates folder within the ME|ML|IMD folders respectively.
   - `tree_supports/` the **Bootstrap support values** are stored as node labels in the trees found in tree_supports folder.
   Here you will find one folder with:
     - the trees with the <ME|ML> topology and the <ME|ML> support values (ID_ME|ML_tree_ME|ML_bs.nwk)
