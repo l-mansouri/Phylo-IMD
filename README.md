@@ -58,7 +58,6 @@ Multistrap per default will:
       - the combined (multistrap) bootstrap support values
       - the sequence based support values
       - the IMD support values
-  -  the IMD tree with the IMD support values
 
 Please refer to the output section for a precise description of the output file naming.
 
@@ -111,8 +110,6 @@ nextflow run main.nf -profile multistrap -fasta <id.fasta> -templates <id.templa
     - the trees with the <ME|ML> topology and the <ME|ML> support values (ID_ME|ML_tree_ME|ML_bs.nwk)
     - the IMD support values (ID_ME|ML_tree_IMD_bs.nwk)
     - the multistrap support values (ID_ME|ML_tree_multistrap_bs.nwk).
-    
-    Additionally, you will find the IMD folder, with the IMD tree with the IMD bootstrap support values (ID_IMD_tree_IMD_bs.nwk).
   </details>
 
 
