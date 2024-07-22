@@ -23,9 +23,9 @@ for (fr in seq(from=10, to=200, by=5)){
   no_col=c(no_col,fr)
   for (rep in 0:9){
     #reading the trees computed on the 200 columns
-    tree1d=read.tree(paste('exp_pdb_results_SUBSET49/ME_trees/',fam,'_mTMalign_untrimmed_random_msa_replicate.',rep,'_with_200_columns.nwk', sep=''))
-    tree3d=read.tree(paste('exp_pdb_results_SUBSET49/IMD_trees/',fam,'_mTMalign_untrimmed.random_column_pairs_replicate.',rep,'_with_200_columns.txt.matrices_fastme_tree.nwk', sep=''))
-    treeml=read.tree(paste('exp_pdb_results_SUBSET49/ML_trees/',fam,'_mTMalign_untrimmed_random_msa_replicate.',rep,'_with_200_columns.ph.treefile', sep=''))
+    tree1d=read.tree(paste('exp_pdb_results_SUBSET49/ME_trees/',fam,'_exp_pdb_results_SUBSET49_untrimmed_random_msa_replicate.',rep,'_with_200_columns.nwk', sep=''))
+    tree3d=read.tree(paste('exp_pdb_results_SUBSET49/IMD_trees/',fam,'_exp_pdb_results_SUBSET49_untrimmed.random_column_pairs_replicate.',rep,'_with_200_columns.txt.matrices_fastme_tree.nwk', sep=''))
+    treeml=read.tree(paste('exp_pdb_results_SUBSET49/ML_trees/',fam,'_exp_pdb_results_SUBSET49_untrimmed_random_msa_replicate.',rep,'_with_200_columns.ph.treefile', sep=''))
     #computing the shared branches: using prop.clades with 2 trees the possible values are 0,1,2 and we only need the 2; that have to be transformed into 1s for the sake of this script hence the modification of the vector
     v1d=prop.clades(tree1d, tree3d, treeml)
     v1d[is.na(v1d)] <- 0
@@ -45,9 +45,9 @@ for (fr in seq(from=10, to=200, by=5)){
     total_sh=total_sh+sum(v1d) #number of shared branches
     total_tot=total_tot+(length(v1d)-1)
     #importing the trees on the fraction
-    ftree1d=read.tree(paste('exp_pdb_results_SUBSET49/ME_trees/',fam,'_mTMalign_untrimmed_random_msa_replicate.',rep,'_with_',fr,'_columns.nwk', sep=''))
-    ftree3d=read.tree(paste('exp_pdb_results_SUBSET49/IMD_trees/',fam,'_mTMalign_untrimmed.random_column_pairs_replicate.',rep,'_with_',fr,'_columns.txt.matrices_fastme_tree.nwk', sep=''))
-    ftreeml=read.tree(paste('exp_pdb_results_SUBSET49/ML_trees/',fam,'_mTMalign_untrimmed_random_msa_replicate.',rep,'_with_',fr,'_columns.ph.treefile', sep=''))
+    ftree1d=read.tree(paste('exp_pdb_results_SUBSET49/ME_trees/',fam,'_exp_pdb_results_SUBSET49_untrimmed_random_msa_replicate.',rep,'_with_',fr,'_columns.nwk', sep=''))
+    ftree3d=read.tree(paste('exp_pdb_results_SUBSET49/IMD_trees/',fam,'_exp_pdb_results_SUBSET49_untrimmed.random_column_pairs_replicate.',rep,'_with_',fr,'_columns.txt.matrices_fastme_tree.nwk', sep=''))
+    ftreeml=read.tree(paste('exp_pdb_results_SUBSET49/ML_trees/',fam,'_exp_pdb_results_SUBSET49_untrimmed_random_msa_replicate.',rep,'_with_',fr,'_columns.ph.treefile', sep=''))
     #computing the shared br between the fraction tree and the full(200 col) tree
     pc1d1d=prop.clades(tree1d, ftree1d)
     pc1d1d[is.na(pc1d1d)] <- 0

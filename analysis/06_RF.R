@@ -6,7 +6,7 @@ library(RColorBrewer)
 # Overview of the script: 
 # read in trees and calculate RF distance
 # -----------------------------------------------------------------------------
-
+setwd("/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis/source_data/")
 df = read.table("source_data/RF_table.csv", header = TRUE, sep = ",")
 okRFme=df[df$RF3d<df$RFtm,1]
 sameRFme=df[df$RF3d==df$RFtm,1]

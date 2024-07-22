@@ -64,6 +64,8 @@ p_sat1=ggplot(df111, aes(x=type, y=correlations, fill=type, col = type, alpha = 
   theme(panel.background = element_rect(fill = "transparent", color = NA))+ theme(plot.background = element_rect(color = NA))
 ggsave('plots/main/Fig1_correlation_input_patristic_mtmuntrimmed_508.png', plot=p_sat1, width = 6, height = 7, dpi = 300)
 
+mtm
+
 # mtm df columns COR1dme, CORtmme, COR3dme and rename as Seq-ME, TM-ME, IMD-ME
 mtm = mtm[,c("COR1dme", "CORtmme", "COR3dme")]
 colnames(mtm) = c("SeqME", "TMME", "IMDME")
