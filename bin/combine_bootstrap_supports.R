@@ -11,6 +11,7 @@ p <- add_argument(p, "--r1", help="The first replicates file", type="character")
 p <- add_argument(p, "--r2", help="The second replicates file", type="character")
 p <- add_argument(p, "--bs1", help="The first tree with bootstrap support", type="character")
 p <- add_argument(p, "--bs2", help="The second tree with bootstrap support", type="character")
+p <- add_argument(p, "--bs3", help="The first tree with bootstrap support only from second", type="character")
 p <- add_argument(p, "--o", help="The combined tree with bootstrap support", type="character")
 args <- parse_args(p)
 
@@ -39,6 +40,8 @@ bs_first <- compute_bs_support(first_topology, first_replicates, args$bs1)
 # Compute second bootstrap support 
 bs_second <- compute_bs_support(second_topology, second_replicates, args$bs2)
 
+# Compute the bootstrap support using the second replicates on the first topology
+bs_third <- compute_bs_support(first_topology, second_replicates, args$bs3)
 
 #-------------------------------------------------------------------------------
 #                   COMPUTE MULTISTRAP
@@ -47,6 +50,7 @@ bs_second <- compute_bs_support(second_topology, second_replicates, args$bs2)
 second_replicates_on_first_topology <- compute_bs_support(first_topology, second_replicates)
 external_support <- as.numeric(second_replicates_on_first_topology$node.label[-1])
 first_support <- as.numeric(bs_first$node.label[-1])
+
 
 # Compute the combination of the support values
 supports <- cbind(first_support, external_support)

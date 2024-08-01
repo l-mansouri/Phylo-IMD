@@ -1,8 +1,6 @@
 process 'computing_Seq_ML_trees'{
   errorStrategy 'ignore'
   tag"${id}"
-  publishDir "${params.output}/${params.align}_ML_${params.trimmer}_trees/", mode: 'copy', overwrite: true, pattern: "*.nwk"
-  publishDir "${params.output}/${params.align}_ML_${params.trimmer}_trees/replicates", mode: 'copy', overwrite: true, pattern: "*.replicates"
   container 'lmansouri/phylo_imd_iqtree:1.0'
 
   input:
