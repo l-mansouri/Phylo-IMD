@@ -1,5 +1,6 @@
 library(phangorn)
 library(ggplot2)
+library(phangorn)
 
 # ! PIPELINE OUTPUT FOLDER, CHANGE ACCORDINGLY
 output_folder = '/home/luisasantus/Desktop/crg_cluster/newphylo/NF_draft/'
@@ -113,7 +114,7 @@ for (al in aligners){
             df_complete = rbind(df_complete, df)
         }
 
-        write.table(df_complete, file=paste(source_data,al,'_',tr,'_input_patristic_distances_test.txt', sep=''), append=F,quote=F, sep = " ", eol = "\n", na = "NA", dec = ".",row.names =F, col.names =T)
+        write.table(df_complete, file=paste(source_data,al,'_',tr,'_input_patristic_distances_raw.txt', sep=''), append=F,quote=F, sep = " ", eol = "\n", na = "NA", dec = ".",row.names =F, col.names =T)
 
 
     }

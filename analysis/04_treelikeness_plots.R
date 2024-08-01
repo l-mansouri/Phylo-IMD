@@ -13,6 +13,10 @@ tr="untrimmed"
 
 # Square everything 
 mtm = mtm^2
+# keep only the columns of interest
+mtm = mtm[,c("COR1dme", "CORtmme", "COR3dme")]
+# save in souce_data
+write.table(mtm, paste('source_data/Fig1A.csv', sep = ""), row.names = F, col.names = T)
 
 median_seq = round(median(mtm$COR1dme),3)
 median_imd = round(median(mtm$COR3dme),3)
@@ -62,7 +66,11 @@ p_sat1=ggplot(df111, aes(x=type, y=correlations, fill=type, col = type, alpha = 
     annotate('text', x=df111$type[513], y=0.53, label=(paste("median =", median_tm)), vjust=1.7, col = "black", size = 3.5)+
     annotate('text', x=df111$type[1025], y=0.53, label=(paste("median =", median_imd)), vjust=1.7, col = "black", size = 3.5)+
   theme(panel.background = element_rect(fill = "transparent", color = NA))+ theme(plot.background = element_rect(color = NA))
-ggsave('plots/main/Fig1_correlation_input_patristic_mtmuntrimmed_508.png', plot=p_sat1, width = 6, height = 7, dpi = 300)
+
+
+p_sat1 <- p_sat1 & plot_annotation(tag_levels = list("A"))
+p_sat1
+ggsave('plots/main/Fig1_correlation_input_patristic_mtmuntrimmed_508_withA.png', plot=p_sat1, width = 6, height = 7, dpi = 300)
 
 mtm
 

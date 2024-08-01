@@ -3,12 +3,12 @@ library(ggplot2)
 library(ggExtra)
 
 # ! PIPELINE OUTPUT FOLDER, CHANGE ACCORDINGLY
-output_folder = '/home/luisasantus/Desktop/crg_cluster/NF_draft/'
+output_folder = '/home/luisasantus/Desktop/crg_cluster/newphylo/NF_draft/'
 # ! SOURCE DATA FOLDER, CHANGE ACCORDINGLY
 source_data = '/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis/source_data/'
+setwd(source_data)
 fl=read.table('list_of_families_with_all_rep_in_3d')[,1]
 setwd(output_folder)
-
 
 # -----------------------------------------------------------------------------
 # Overview of the script: 
@@ -53,7 +53,7 @@ for (al in aligners){
                 isinml[is.na(isinml)]=0
                 isinml=isinml[-1]
 
-                ttb=length(b3d)-1
+                ttb=length(b3d)
                 tb=length(b3d[b3d>=i])
 
                 isinml=b3d*isinml
@@ -77,7 +77,7 @@ for (al in aligners){
             OKB_ME=c(OKB_ME,sum(ok_branchesME))
         }
         DF=data.frame(pos=1:100, OKB_ML, OKB_ME, TB, TTB)
-        write.table(DF, file=paste(source_data,al,'_',tr,'counts_of_found_in_ML_and_ME_with_moving_IMD_BS_thr.txt', sep=''), row.names=F, col.names=T, quote=F)
+        write.table(DF, file=paste(source_data,al,'_',tr,'counts_of_found_in_ML_and_ME_with_moving_IMD_BS_thr_test.txt', sep=''), row.names=F, col.names=T, quote=F)
     }
 }
 

@@ -21,6 +21,7 @@ get_all_pp_and_pred <- function(tree_type, references, bs_threshold, bs_type, nc
         for (ref in references){
             print(ref)
             new_proven_positives = get_proven_positives(fam, tree_type, ref, bs_threshold)
+            print("proved positives")
             if(sum(new_proven_positives) == 0 | sum(new_proven_positives) == length(new_proven_positives)){
                 next
             }
@@ -39,6 +40,7 @@ prep_df_roc <- function(tree_type, ref, bs_threshold, bs_type1, bs_type2, ncol, 
     df2 <- get_all_pp_and_pred(tree_type = tree_type, ref = ref, bs_threshold = bs_threshold, bs_type = bs_type2, ncol = ncol, mode = mode)
     roc1 <- roc(df1$proven_positives, df1$predicted_values)
     roc2 <- roc(df2$proven_positives, df2$predicted_values)
+
     roc1_df <- data.frame(roc1$thresholds, roc1$sensitivities, roc1$specificities)
     roc2_df <- data.frame(roc2$thresholds, roc2$sensitivities, roc2$specificities)
     colnames(roc1_df) <- c("threshold", "sensitivity", "specificity")
@@ -103,7 +105,7 @@ bs_threshold = 80
 bs_type = "ME"
 ncol = 25
 mode = "arithmetic_average"
-references = c("ME", "ML", "ME+ML")
+references = c("ML")
 # ROC df for ME+ML ref on bs_type ME and ME+IMD
 roc_df_meimd <- prep_df_roc(tree_type = tree_type, ref = references, bs_threshold = bs_threshold, bs_type1 = "ME", bs_type2 = "ME+IMD", ncol = ncol, mode = mode)
 p1 <- plot_ROC(roc_df_meimd, "plots/suppl/roc_me_meimd.png", title = "")

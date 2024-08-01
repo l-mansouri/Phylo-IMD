@@ -1,4 +1,5 @@
 parse_splits <- function(fam,splits_dir, output_dir){
+
     split_file_path <- list.files(paste(output_dir, splits_dir, sep = "/"), pattern = paste(fam,"_*", sep = ""), full.names = TRUE)
     split_file = read.csv(split_file_path, header = F, colClasses = "character")
     return(split_file)
@@ -130,6 +131,7 @@ get_proven_positives <- function(fam, tree_type, ref, bs_threshold){
 
     # extract split files 
     splits_dir = get_splits_dir_names(tree_type,ref,200)
+    print(splits_dir)
 
     # combine bs 
     method = "min"
@@ -138,9 +140,11 @@ get_proven_positives <- function(fam, tree_type, ref, bs_threshold){
     }else if(length(splits_dir) == 3){
         combined_splits = combine_bs_3(parse_splits(fam, splits_dir[1], output_dir), parse_splits(fam, splits_dir[2], output_dir), parse_splits(fam, splits_dir[3], output_dir), method)
     }else{
+        print("here")
         combined_splits = parse_splits(fam, splits_dir[1], output_dir)
     }
 
+    print("ifeles")
     # get the proven positives as a binary vector
     proven_positives = get_splits_as_pp_binary(combined_splits, bs_threshold)
 

@@ -209,7 +209,7 @@ pc <- pCD[[1]]
 pd <- pCD[[2]]
 
 panel <- (pa+pb)/(pc+pd)
-ggsave(paste('plots/',"suppl",'/S3_scatter_bootstrap_untrimmed.png', sep = ""), plot=panel, width = 14 , height =12)
+ggsave(paste('plots/',"suppl",'/S8_scatter_bootstrap_untrimmed.png', sep = ""), plot=panel, width = 14 , height =12)
 
 
 # TRIMMED
@@ -224,7 +224,7 @@ pe <- pEF[[1]]
 pf <- pEF[[2]]
 
 panel <- (pa+pb)/(pc+pd)/(pe+pf)
-ggsave(paste('plots/',"suppl",'/S4_scatter_bootstrap_trimmed.png', sep = ""), plot=panel, width = 15 , height =18)
+ggsave(paste('plots/',"suppl",'/S9_scatter_bootstrap_trimmed.png', sep = ""), plot=panel, width = 15 , height =18)
 
 
 #---------------- LINEPLOTS ---------------------
