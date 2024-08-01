@@ -1,8 +1,6 @@
 process 'generating_randomized_fractions' {
   //generates the randomized column alignment and the randomized column pairs
     tag "${id}"
-    publishDir "${params.output}/random_sampled_alignment", mode: 'copy', overwrite: true, pattern: "*.fa"
-    publishDir "${params.output}/random_sampled_columns", mode: 'copy', overwrite: true, pattern: "*.txt"
     container 'lmansouri/phylo_imd_iqtree:1.0'
 
     input:
