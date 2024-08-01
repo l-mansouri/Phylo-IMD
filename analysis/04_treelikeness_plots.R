@@ -32,6 +32,8 @@ df111=data.frame(correlations=c(mtm$COR1dme, mtm$CORtmme, mtm$COR3dme),
 
 palette = c("#27A592", "#2191FB", 158 )
 palette = c("#A331D8","#27A592", "#2191FB" )
+palette = c("#A331D8","#ffaf1c", "#2191FB" )
+palette = c("#f8766d", "#A331D8", "#00ba39")
 #palette = c(158,"#27A592", "#2191FB" )
 
 col_seq = palette[1]

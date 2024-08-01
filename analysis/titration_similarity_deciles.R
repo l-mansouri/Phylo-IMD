@@ -34,6 +34,7 @@ p = ggplot(perc_sim, aes(x = mean_perc_id, fill = titration)) +
         ylab("Density")+
         guides(fill = guide_legend(title = 'Dataset'))
 
+p
 
 
 titration_perc = perc_sim[perc_sim$family %in% titration_families,]$mean_perc_id
