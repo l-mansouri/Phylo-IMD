@@ -29,30 +29,29 @@ workflow ANALYSIS{
         TCOFFEE_SEQREFORMAT(msas)
 
 
+        // ------------------
+        //     iRMSD
+        // ------------------
 
-        // // ------------------
-        // //     iRMSD
-        // // ------------------
-
-        // evaluate_nirmsd( aln_ch )
+        evaluate_nirmsd( aln_ch )
 
 
-        // // ------------------
-        // //     SPLITS- AUC
-        // // ------------------
+        // ------------------
+        //     SPLITS- AUC
+        // ------------------
     
-        // // mix replicates
-        // replicates = replicates_25_ch.mix(replicates_200_ch)
+        // mix replicates
+        replicates = replicates_25_ch.mix(replicates_200_ch)
 
-        // // combine trees and replicates
-        // trees_ch.combine(replicates, by:0)
-        //         .set{replicate_trees}
+        // combine trees and replicates
+        trees_ch.combine(replicates, by:0)
+                .set{replicate_trees}
 
-        // // // prepare the type 
-        // replicate_trees.map{ fam, splits, tree, bs, replicates -> [fam, tree, replicates, splits+"_"+bs] }.set{ch_for_splits}
+        // // prepare the type 
+        replicate_trees.map{ fam, splits, tree, bs, replicates -> [fam, tree, replicates, splits+"_"+bs] }.set{ch_for_splits}
 
-        // // Compute the splits
-        // compute_splits(ch_for_splits)
+        // Compute the splits
+        compute_splits(ch_for_splits)
 
 
 
