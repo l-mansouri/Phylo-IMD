@@ -203,7 +203,7 @@ p_slope_before <- plot_distribution_across_families(overall_slopes_per_family, "
 p_slope_all <- plot_distribution_across_families(overall_slopes_per_family, "slope")+xlab("Slope")
 
 
-p1 <- (p_r2_before + p_r2_all)/(p_slope_before + p_slope_all)+ plot_annotation(tag_levels = 'A')
+p1 <- (p_slope_before + p_slope_all)/(p_r2_before + p_r2_all)+ plot_annotation(tag_levels = 'A')
 ggsave(paste(source_data, '../plots/review/', "SATURATION_SUPP.png", sep = ''), plot = p1, width = 10, height = 9, dpi = 300, units = 'in')
 
 
