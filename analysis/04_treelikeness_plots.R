@@ -46,9 +46,9 @@ p_sat1=ggplot(df111, aes(x=type, y=correlations, fill=type, col = type, alpha = 
     geom_boxplot(outlier.size=0.1, lwd=0.6, linetype = "solid" )+
     xlab('')+
     ylab('R² (input distances, patristic distances)')+
-    annotate('text', x=df111$type[1], y=1.1, label=label_seq, vjust=1.7, col = col_seq, size = 6)+
-    annotate('text', x=df111$type[513], y=1.1, label=label_tm, vjust=1.7, col = col_tm, size = 6)+
-    annotate('text', x=df111$type[1025], y=1.1, label=label_imd, vjust=1.7, col = col_imd, size = 6)+
+    annotate('text', x=df111$type[1], y=1.15, label=label_seq, vjust=1.7, col = col_seq, size = 6)+
+    annotate('text', x=df111$type[513], y=1.15, label=label_tm, vjust=1.7, col = col_tm, size = 6)+
+    annotate('text', x=df111$type[1025], y=1.15, label=label_imd, vjust=1.7, col = col_imd, size = 6)+
     ylim(0,1.19)+
     scale_fill_manual(values=palette)+
     scale_color_manual(values=palette)+
@@ -71,10 +71,8 @@ p_sat1=ggplot(df111, aes(x=type, y=correlations, fill=type, col = type, alpha = 
 
 
 p_sat1 <- p_sat1 & plot_annotation(tag_levels = list("A"))
-p_sat1
-ggsave('plots/main/Fig1_correlation_input_patristic_mtmuntrimmed_508_withA.png', plot=p_sat1, width = 6, height = 7, dpi = 300)
+ggsave('plots/main/Fig1_correlation_input_patristic_mtmuntrimmed_508.png', plot=p_sat1, width = 6, height = 7, dpi = 300)
 
-mtm
 
 # mtm df columns COR1dme, CORtmme, COR3dme and rename as Seq-ME, TM-ME, IMD-ME
 mtm = mtm[,c("COR1dme", "CORtmme", "COR3dme")]

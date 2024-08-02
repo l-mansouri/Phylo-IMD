@@ -3,6 +3,7 @@ library(gridExtra)
 library(RColorBrewer)
 library(patchwork)
 
+setwd("/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis/")
 fl=read.table('source_data/list_of_families_with_all_rep_in_3d')[,1]
 
 
@@ -101,7 +102,7 @@ scatter_plot <- function(df, title = "", tag = list("A", "B")){
 
 plot_lines <- function(al,tr, folder, tag = list("","")){
   DF= read.table(paste('source_data/',al,'_',tr,'counts_of_found_in_ML_and_ME_with_moving_IMD_BS_thr.txt', sep=''), header = T)
-  DF["TTB"]  = max(DF["TB"])
+  #DF["TTB"]  = max(DF["TB"])
   OKB_ML = DF[,"OKB_ML"]
   OKB_ME = DF[,"OKB_ME"]
   TTB    = DF[,"TTB"]
@@ -182,12 +183,12 @@ plot_lines <- function(al,tr, folder, tag = list("","")){
 main <- scatter_plot("source_data/mTMalign_untrimmed_bootstrap_table.csv",tag = list("A", "B"))
 pA <- main[[1]]
 pB <- main[[2]]
-
+pA
 
 main <- plot_lines("mTMalign", "untrimmed", "main", tag = list("C", "D"))
 pC <- main[[1]]
 pD <- main[[2]]
-
+pC
 # Arrange the plots with spacing
 panel <- (pA+pB)/(pC+pD)
 
@@ -232,6 +233,7 @@ ggsave(paste('plots/',"suppl",'/S9_scatter_bootstrap_trimmed.png', sep = ""), pl
 pAB <- plot_lines("sap_tmalign", "untrimmed", "suppl", list("A", "B"))
 pa <- pAB[[1]]
 pb <- pAB[[2]]
+
 pCD <- plot_lines("tcoffee", "untrimmed", "suppl", list("C", "D"))
 pc <- pCD[[1]]
 pd <- pCD[[2]]

@@ -17,6 +17,8 @@ setwd(output_folder)
 
 aligners=c('sap_tmalign', 'tcoffee', "mTMalign")
 trimming=c('untrimmed', 'trimmed')
+
+aligners=c('mTMalign')
         
 for (al in aligners){
     print(al)
@@ -77,7 +79,7 @@ for (al in aligners){
             OKB_ME=c(OKB_ME,sum(ok_branchesME))
         }
         DF=data.frame(pos=1:100, OKB_ML, OKB_ME, TB, TTB)
-        write.table(DF, file=paste(source_data,al,'_',tr,'counts_of_found_in_ML_and_ME_with_moving_IMD_BS_thr_test.txt', sep=''), row.names=F, col.names=T, quote=F)
+        write.table(DF, file=paste(source_data,al,'_',tr,'counts_of_found_in_ML_and_ME_with_moving_IMD_BS_thr.txt', sep=''), row.names=F, col.names=T, quote=F)
     }
 }
 
@@ -87,7 +89,7 @@ for (al in aligners){
 # Overview of the script: 
 # read in trees and calculate RF distance
 # -----------------------------------------------------------------------------
-
+aligners=c('sap_tmalign', 'tcoffee', "mTMalign")
 
 for (al in aligners){
     print(al)
