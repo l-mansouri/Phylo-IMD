@@ -18,7 +18,6 @@ setwd(output_folder)
 aligners=c('sap_tmalign', 'tcoffee', "mTMalign")
 trimming=c('untrimmed', 'trimmed')
 
-aligners=c('mTMalign')
         
 for (al in aligners){
     print(al)
