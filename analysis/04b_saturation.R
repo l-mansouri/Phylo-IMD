@@ -62,6 +62,7 @@ line_size = 1.3
 
 
 
+
 # -----------------------------------------------------------------------------
 #       PLOT example
 # -----------------------------------------------------------------------------
@@ -177,6 +178,17 @@ pratios <- ggplot(overall_slopes_per_family, aes(x = ratio_slopes, fill = method
           theme(axis.text = element_text(color = "black", size = 10))
 
 
+# get a new df with each value in column method a new column
+
+df_for_test = dcast(overall_slopes_per_family, family ~ method, value.var = "ratio_slopes")
+
+# paired wilcoxon test on the ratios btw TM and pdist
+wilcox.test(df_for_test$TM, df_for_test$pdist, paired = TRUE)
+
+# paired wilcoxon test on the ratios btw IMD and pdist
+wilcox.test(df_for_test$IMD, df_for_test$pdist, paired = TRUE)
+
+
 
 c1 <-  p_sat1 + pratios + plot_annotation(tag_levels = list("A", "B"))
 c1b <-  hexbin_example_perc + hexbin_example_tm + hexbin_example_imd + plot_annotation(tag_levels = list("C", "D", "E"))
@@ -227,3 +239,179 @@ table_data[,2:ncol(table_data)] = round(table_data[,2:ncol(table_data)], 2)
 # save table
 write.table(table_data, paste(source_data, "../tables/SATURATION_table.csv", sep = ""), row.names = F, col.names = T, sep = ",")
 table_data
+
+
+# -----------------------------------------------------------------------------
+#  GET EXAMPLES
+# -----------------------------------------------------------------------------
+plot_scatters_distances <- function(df, low_5, plot_name){
+  # plot the low families
+  plot_low_5_list = list()
+  i = 1 
+  for (fam in low_5){
+
+    
+    # compute R
+    input_patristic_df_subset = df[df$family == fam,]
+
+    # compute R 
+    r = cor(input_patristic_df_subset$dIMD, input_patristic_df_subset$pML, method = "pearson")
+    r2 = r^2
+    plot_sat = saturation_plot_smooth(input_patristic_df_subset, "pML", "dIMD", "ML patristic distance", "normalized IMD distance")
+    plot_sat = plot_sat +ggtitle(paste(fam, "\n R² = ", round(r2, 2), "\n pdist = ", round(mean(input_patristic_df_subset$pdist), 2)))
+    plot_sat = plot_sat + theme(plot.title = element_text(hjust = 0.5))+theme(legend.position = "none")
+
+  
+    plot_low_5_list[[i]] = plot_sat 
+
+    # also add tm ml
+    # compute R
+    r = cor(input_patristic_df_subset$dTM, input_patristic_df_subset$pML, method = "pearson")
+    r2 = r^2
+    plot_sat = saturation_plot_smooth(input_patristic_df_subset, "pML", "dTM", "ML patristic distance", "normalized TM distance")+ggtitle(paste("R² = ", round(r2, 2)))
+    plot_sat = plot_sat +ggtitle(paste(fam, "\n R² = ", round(r2, 2), "\n pdist = ", round(mean(input_patristic_df_subset$pdist), 2)))
+    # put title in the milddle
+    plot_sat = plot_sat + theme(plot.title = element_text(hjust = 0.5))+theme(legend.position = "none")
+    plot_low_5_list[[i+1]] = plot_sat
+
+    # add perc id
+    r = cor(input_patristic_df_subset$pdist, input_patristic_df_subset$pML, method = "pearson")
+    r2 = r^2
+    plot_sat = saturation_plot_smooth(input_patristic_df_subset, "pML", "pdist", "ML patristic distance", "normalized pdist")+ggtitle(paste("R² = ", round(r2, 2)))
+    plot_sat = plot_sat +ggtitle(paste(fam, "\n R² = ", round(r2, 2), "\n pdist = ", round(mean(input_patristic_df_subset$pdist), 2)))
+    # put title in the milddle
+    plot_sat = plot_sat + theme(plot.title = element_text(hjust = 0.5))+theme(legend.position = "none")
+    plot_low_5_list[[i+2]] = plot_sat
+    i = i + 3
+
+    # save input patristic subset
+    # save source data
+
+  }
+
+  # put the low 5 in a panel with 2 col using patchwork
+  # Combine plots into a grid with one common legend
+  combined_plot <- (plot_low_5_list[[1]]+
+                    plot_low_5_list[[2]] + 
+                    plot_low_5_list[[3]] +
+                    plot_low_5_list[[4]] +
+                    plot_low_5_list[[5]] +
+                    plot_low_5_list[[6]] +
+                    plot_low_5_list[[7]] +
+                    plot_low_5_list[[8]] +
+                    plot_low_5_list[[9]] +
+                    plot_low_5_list[[10]]+
+                    plot_low_5_list[[11]]+
+                    plot_low_5_list[[12]]+
+                    plot_low_5_list[[13]]+
+                    plot_low_5_list[[14]]+
+                    plot_low_5_list[[15]]
+                    ) + 
+    plot_layout(ncol = 3, guides = "collect") & 
+    theme(legend.position = 'right')&
+    plot_annotation(tag_levels = 'A')
+
+  # save the final image
+  ggsave(paste(source_data, '../plots/review/', plot_name, sep = ''), plot = combined_plot, width = 12, height = 18, dpi = 300, units = 'in')
+
+}
+
+df = input_patristic_df[,columns_filter]
+df$pdist = 100-df$percid
+
+# Normalize 
+norm_imd = median(df$dIMD)
+norm_tm = median(df$dTM)
+norm_perc = median(df$pdist)
+threshold = median(df$pML)
+df$dIMD = df$dIMD*100/norm_imd
+df$dTM= df$dTM*100/norm_tm
+df$pdist = df$pdist*100/norm_perc
+
+
+correlations = data.frame()
+for (fam in fl){
+
+  df_subset = df[df$family == fam,]
+  cor_dIMD_pML = cor(df_subset$dIMD, df_subset$pML, method = "pearson")
+  r2_imd_ml = cor_dIMD_pML^2
+
+  cor_dTM_pML = cor(df_subset$dTM, df_subset$pML, method = "pearson")
+  r2_tm_ml = cor_dTM_pML^2
+
+  cor_percid_pML = cor(df_subset$pdist, df_subset$pML, method = "pearson")
+  r2_percid_ml = cor_percid_pML^2
+
+  correlations = rbind(correlations, data.frame(family = fam, cor_dIMD_pML = cor_dIMD_pML, r2_imd_ml = r2_imd_ml, cor_dTM_pML = cor_dTM_pML, r2_tm_ml = r2_tm_ml, cor_percid_pML = cor_percid_pML, r2_percid_ml = r2_percid_ml))
+}
+
+
+
+# Get bottom at 9th decile
+perc_quantile_threshold_10 = quantile(correlations$cor_dIMD_pML, c(0.1)) 
+removed_quantile_10 = correlations[correlations$cor_dIMD_pML > perc_quantile_threshold_10,]
+removed_quantile_10 = removed_quantile_10[order(removed_quantile_10$cor_dIMD_pML),]
+low_5 = removed_quantile_10[1:5,"family"]
+low_5
+
+# Get middle at 5th decile
+perc_quantile_threshold_50 = quantile(correlations$cor_dIMD_pML, c(0.5, 0.4))
+# get the values in the middle
+quantile_50_elements = correlations[correlations$cor_dIMD_pML > perc_quantile_threshold_50[2] & correlations$cor_dIMD_pML < perc_quantile_threshold_50[1],]
+# now get the middle ones, sort and get the middle
+# order 
+quantile_50_elements = quantile_50_elements[order(quantile_50_elements$cor_dIMD_pML),]
+middle_5th_idx = round(nrow(quantile_50_elements)/2)
+lower_middle_5 = middle_5th_idx - 2
+upper_middle_5 = middle_5th_idx + 2
+mid_5 = quantile_50_elements[lower_middle_5:upper_middle_5,"family"]
+mid_5
+
+# get 5 random elements near the median 
+# extract the median
+med = median(correlations$cor_dIMD_pML)
+# get the 5 closest values to the median
+correlations$diff = abs(correlations$cor_dIMD_pML - med)
+# sort by diff
+correlations = correlations[order(correlations$diff),]
+mid_5 = correlations[1:5,]$family
+
+# now extract the 5 families with the most number of sequences
+# get the number of sequences per family
+seqs_per_fam = data.frame()
+for (fam in fl){
+  seqs_per_fam = rbind(seqs_per_fam, data.frame(family = fam, n_seqs = nrow(input_patristic_df[input_patristic_df$family == fam,])))
+}
+
+# get the 5 families with the most sequences
+top_5_powered = seqs_per_fam[order(seqs_per_fam$n_seqs, decreasing = TRUE),][1:5,"family"]
+top_5_powered
+
+# get the ones with the highest correlation
+top_5 = correlations[order(correlations$cor_dIMD_pML, decreasing = TRUE),][1:5,"family"]
+
+
+
+#--------------------------------------------------------------------------
+# PLOT THE SCATTERS
+#--------------------------------------------------------------------------
+plot_scatters_distances(df, low_5, 'SATURATION_bottom_9th_decile.png')
+plot_scatters_distances(df, mid_5, 'SATURATION_middle_5th_decile.png')
+plot_scatters_distances(df, top_5_powered, 'SATURATION_top_5_powered.png')
+plot_scatters_distances(df, top_5, 'SATURATION_top_5.png')
+
+#--------------------------------------------------------------------------
+# SAVE SOURCE DATA
+#--------------------------------------------------------------------------
+input_patristic_df_for_sd = df[,c("family", "seqs", "dIMD", "dTM", "pML","pdist")]
+
+
+
+# save the input patristic distances for low_5 families in a file
+write.table(input_patristic_df_for_sd[input_patristic_df_for_sd$family %in% low_5,], paste(source_data, 'saturation_low_5.csv', sep = ''), row.names = FALSE, quote = FALSE, sep = ",")
+# save the input patristic distances for mid_5 families in a file
+write.table(input_patristic_df_for_sd[input_patristic_df_for_sd$family %in% mid_5,], paste(source_data, 'saturation_mid_5.csv', sep = ''), row.names = FALSE, quote = FALSE, sep = ",")
+# save the input patristic distances for top_5 families in a file
+write.table(input_patristic_df_for_sd[input_patristic_df_for_sd$family %in% top_5,], paste(source_data, 'saturation_top_5.csv', sep = ''), row.names = FALSE, quote = FALSE, sep = ",")
+# save the input patristic distances for top_5 families in a file
+write.table(input_patristic_df_for_sd[input_patristic_df_for_sd$family %in% top_5_powered,], paste(source_data, 'saturation_top_5_powered.csv', sep = ''), row.names = FALSE, quote = FALSE, sep = ",")
