@@ -1,5 +1,6 @@
 # import file in same directory called utils_auc.R
 # move wd to location of file
+setwd("/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis/")
 source("utils_auc.R")
 library(pROC)
 library(dplyr)
@@ -11,7 +12,7 @@ source_data = "/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis
 output_dir = "/home/luisasantus/Desktop/crg_cluster/newphylo/NF_TMalign/mTMalign/titration_every_5_bootstrap_200_columns/split_files"
 
 # Read in the big AUC table
-path_auc_table = paste(source_data, "auc_complete_df_with_mcc_me.tsv", sep = "/")
+path_auc_table = paste(source_data, "auc_complete_df_with_mcc_small.tsv", sep = "/")
 auc_complete_df = read.table(path_auc_table, header = TRUE, sep = ",", stringsAsFactors = FALSE)
 
 
@@ -38,11 +39,15 @@ t3_data_grouped$mean_auc <- round(t3_data_grouped$mean_auc, 3)
 t3_data_grouped$ref <- factor(t3_data_grouped$ref, levels = col_order_ref)
 t3_data_grouped$bs_type <- factor(t3_data_grouped$bs_type, levels = col_order_bs)
 t3_matrix <- t3_data_grouped %>% spread(bs_type, mean_auc)
+t3_data_grouped
 # write the table to a file
 write.table(t3_matrix, file = paste(source_data, "../tables/Table3.csv", sep = "/"), sep = ",", quote = FALSE, row.names = FALSE)
 
+head(t3_data)
 
-
+# extract ME and ME +IMD bs_types on ref ME+ML 
+t3_data_ME_MEIMD <- t3_data[which(t3_data$ref == "ME+ML" & (t3_data$bs_type == "ME" | t3_data$bs_type == "ME+IMD")),]
+t3_data_ME_MEIMD
 # --------------------------------------------------
 #          SUPPLEMENTARY TABLE 4
 # --------------------------------------------------
@@ -59,13 +64,14 @@ write.table(t3_matrix_sd, file = paste(source_data, "../tables/S4.csv", sep = "/
 #          SUPPLEMENTARY TABLE 5
 # --------------------------------------------------
 
-
+alternative = "greater"
+# two.sided, greater, less
 # merge imd_col and me_col by fam, ref, bs_threshold, ncol, mode
 do_wilcoxon_on_all_families <- function(t3_data, col1_id, col2_id){
     col1 = t3_data[t3_data$bs_type == col1_id,]
     col2 = t3_data[t3_data$bs_type == col2_id,]
     merged = merge(col1, col2, by = c("fam", "ref", "bs_threshold", "ncol", "mode"), all = TRUE)
-    pval = wilcox.test(merged$auc_v.x, merged$auc_v.y, paired = TRUE, alternative = "greater")$p.value
+    pval = wilcox.test(merged$auc_v.x, merged$auc_v.y, paired = TRUE, alternative = alternative)$p.value
     return(pval)
 }
 
@@ -74,7 +80,7 @@ do_wilcoxon_on_merged_families <- function(t3_data_grouped, col1_id, col2_id){
     # order the columns ref and bs_type by col_order
     col1 = t3_data_grouped[t3_data_grouped$bs_type == col1_id,]$mean_auc
     col2 = t3_data_grouped[t3_data_grouped$bs_type == col2_id,]$mean_auc
-    pval<- wilcox.test(col1, col2, paired = TRUE, alternative = "greater")$p.value
+    pval<- wilcox.test(col1, col2, paired = TRUE, alternative = alternative)$p.value
     return(pval)
 }
 
@@ -95,7 +101,7 @@ for (i in 1:length(colnames)){
     }
 }
 
-
+df_wilcox
 
 # make it into a matrix
 # df_wilcox_matrix = df_wilcox[,c("firs", "second", "pval_merged")] %>% spread(second, pval_merged)
@@ -106,7 +112,7 @@ df_wilcox_matrix = df_wilcox[,c("firs", "second", "pval")] %>% spread(firs, pval
 df_wilcox_matrix <- format(df_wilcox_matrix, scientific = TRUE)
 df_wilcox_matrix
 # write the table to a file
-write.table(df_wilcox_matrix, file = paste(source_data, "../tables/S5_greater.csv", sep = "/"), sep = ",", quote = FALSE, row.names = FALSE)
+write.table(df_wilcox_matrix, file = paste(source_data, paste("../tables/S5_greater_",alternative,".csv", sep = ""), sep = "/"), sep = ",", quote = FALSE, row.names = FALSE)
 
 
 

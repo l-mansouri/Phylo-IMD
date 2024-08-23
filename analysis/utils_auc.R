@@ -1,4 +1,5 @@
 parse_splits <- function(fam,splits_dir, output_dir){
+
     split_file_path <- list.files(paste(output_dir, splits_dir, sep = "/"), pattern = paste(fam,"_*", sep = ""), full.names = TRUE)
     split_file = read.csv(split_file_path, header = F, colClasses = "character")
     return(split_file)

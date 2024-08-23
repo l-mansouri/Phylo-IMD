@@ -13,21 +13,27 @@ tr="untrimmed"
 
 # Square everything 
 mtm = mtm^2
+# keep only the columns of interest
+mtm = mtm[,c("COR1dme", "CORtmme", "COR3dme")]
+# save in souce_data
+write.table(mtm, paste('source_data/Fig1A.csv', sep = ""), row.names = F, col.names = T)
 
 median_seq = round(median(mtm$COR1dme),3)
 median_imd = round(median(mtm$COR3dme),3)
 median_tm  = round(median(mtm$CORtmme),3)
-label_seq  = paste("Seq-ME \n (median: ",median_seq, ")", sep = "")
-label_imd  = paste("IMD-ME \n (median: ",median_imd, ")", sep = "")
-label_tm  = paste("TM-ME \n (median: ",median_tm, ")", sep = "")
-label_seq = "Seq-ME"
-label_tm = "TM-ME"
-label_imd = "IMD-ME"
+label_seq  = paste("ME \n (median: ",median_seq, ")", sep = "")
+label_imd  = paste("IMD \n (median: ",median_imd, ")", sep = "")
+label_tm  = paste("TM \n (median: ",median_tm, ")", sep = "")
+label_seq = "ME"
+label_tm = "TM"
+label_imd = "IMD"
 df111=data.frame(correlations=c(mtm$COR1dme, mtm$CORtmme, mtm$COR3dme),
     type=factor(rep(c(label_seq, label_tm, label_imd), each=length(mtm[,1])), levels=c(label_seq, label_tm, label_imd)))
 
 palette = c("#27A592", "#2191FB", 158 )
 palette = c("#A331D8","#27A592", "#2191FB" )
+palette = c("#A331D8","#ffaf1c", "#2191FB" )
+palette = c("#f8766d", "#A331D8", "#00ba39")
 #palette = c(158,"#27A592", "#2191FB" )
 
 col_seq = palette[1]
@@ -40,9 +46,9 @@ p_sat1=ggplot(df111, aes(x=type, y=correlations, fill=type, col = type, alpha = 
     geom_boxplot(outlier.size=0.1, lwd=0.6, linetype = "solid" )+
     xlab('')+
     ylab('R² (input distances, patristic distances)')+
-    annotate('text', x=df111$type[1], y=1.1, label=label_seq, vjust=1.7, col = col_seq, size = 6)+
-    annotate('text', x=df111$type[513], y=1.1, label=label_tm, vjust=1.7, col = col_tm, size = 6)+
-    annotate('text', x=df111$type[1025], y=1.1, label=label_imd, vjust=1.7, col = col_imd, size = 6)+
+    annotate('text', x=df111$type[1], y=1.15, label=label_seq, vjust=1.7, col = col_seq, size = 6)+
+    annotate('text', x=df111$type[513], y=1.15, label=label_tm, vjust=1.7, col = col_tm, size = 6)+
+    annotate('text', x=df111$type[1025], y=1.15, label=label_imd, vjust=1.7, col = col_imd, size = 6)+
     ylim(0,1.19)+
     scale_fill_manual(values=palette)+
     scale_color_manual(values=palette)+
@@ -60,9 +66,13 @@ p_sat1=ggplot(df111, aes(x=type, y=correlations, fill=type, col = type, alpha = 
     geom_segment(aes(x = 0, xend = 0, y = 0, yend = 1), linetype = "solid", color = "black")+
     annotate('text', x=df111$type[1], y=0.4, label=( paste("median =", median_seq)), vjust=1.7, col = "black", size = 3.5)+
     annotate('text', x=df111$type[513], y=0.53, label=(paste("median =", median_tm)), vjust=1.7, col = "black", size = 3.5)+
-    annotate('text', x=df111$type[1025], y=0.53, label=(paste("median =", median_imd)), vjust=1.7, col = "black", size = 3.5)+
+    annotate('text', x=df111$type[1025], y=0.58, label=(paste("median =", median_imd)), vjust=1.7, col = "black", size = 3.5)+
   theme(panel.background = element_rect(fill = "transparent", color = NA))+ theme(plot.background = element_rect(color = NA))
+
+
+p_sat1 <- p_sat1 & plot_annotation(tag_levels = list("A"))
 ggsave('plots/main/Fig1_correlation_input_patristic_mtmuntrimmed_508.png', plot=p_sat1, width = 6, height = 7, dpi = 300)
+
 
 # mtm df columns COR1dme, CORtmme, COR3dme and rename as Seq-ME, TM-ME, IMD-ME
 mtm = mtm[,c("COR1dme", "CORtmme", "COR3dme")]
@@ -92,8 +102,8 @@ plot_correlation_patristic <- function(al,tr, tag = ""){
   
   median_seq = round(median(mtm$COR1dme),3)
   median_imd = round(median(mtm$COR3dme),3)
-  label_seq  = paste("Seq-ME \n (median: ",median_seq, ")", sep = "")
-  label_imd  = paste("IMD-ME \n (median: ",median_imd, ")", sep = "")
+  label_seq  = paste("ME \n (median: ",median_seq, ")", sep = "")
+  label_imd  = paste("IMD \n (median: ",median_imd, ")", sep = "")
   
   df111=data.frame(correlations=c(mtm$COR1dme, mtm$COR3dme),
                    type=factor(rep(c(label_seq, label_imd), each=length(mtm[,1])), levels=c(label_seq, label_imd)))

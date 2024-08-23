@@ -3,12 +3,12 @@ library(ggplot2)
 library(ggExtra)
 
 # ! PIPELINE OUTPUT FOLDER, CHANGE ACCORDINGLY
-output_folder = '/home/luisasantus/Desktop/crg_cluster/NF_draft/'
+output_folder = '/home/luisasantus/Desktop/crg_cluster/newphylo/NF_draft/'
 # ! SOURCE DATA FOLDER, CHANGE ACCORDINGLY
 source_data = '/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis/source_data/'
+setwd(source_data)
 fl=read.table('list_of_families_with_all_rep_in_3d')[,1]
 setwd(output_folder)
-
 
 # -----------------------------------------------------------------------------
 # Overview of the script: 
@@ -17,6 +17,7 @@ setwd(output_folder)
 
 aligners=c('sap_tmalign', 'tcoffee', "mTMalign")
 trimming=c('untrimmed', 'trimmed')
+
         
 for (al in aligners){
     print(al)
@@ -53,7 +54,7 @@ for (al in aligners){
                 isinml[is.na(isinml)]=0
                 isinml=isinml[-1]
 
-                ttb=length(b3d)-1
+                ttb=length(b3d)
                 tb=length(b3d[b3d>=i])
 
                 isinml=b3d*isinml
@@ -87,7 +88,7 @@ for (al in aligners){
 # Overview of the script: 
 # read in trees and calculate RF distance
 # -----------------------------------------------------------------------------
-
+aligners=c('sap_tmalign', 'tcoffee', "mTMalign")
 
 for (al in aligners){
     print(al)

@@ -3,6 +3,7 @@ library(gridExtra)
 library(RColorBrewer)
 library(patchwork)
 
+setwd("/home/luisasantus/Desktop/crg_cluster/projects/Phylo-IMD/analysis/")
 fl=read.table('source_data/list_of_families_with_all_rep_in_3d')[,1]
 
 
@@ -43,8 +44,8 @@ scatter_plot <- function(df, title = "", tag = list("A", "B")){
     coeff=100
 
     p1<- ggplot(df, aes(y=average_1d, x=average_3d, color=RF_3d_ME) ) + geom_point() + scale_color_gradient(low="red", high="blue")+
-        ylab('Seq-ME average bootstrap ')+
-        xlab('IMD-ME average bootstrap ')+
+        ylab('ME average bootstrap support value')+
+        xlab('IMD average bootstrap support value')+
         labs(color='RF') +geom_abline(color='gray')+
         annotate('text', x=35, y=95, label=paste('R = ', C3dme,sep='')) +
         xlim(c(0,100))+ylim(c(0,100))+theme_light()+
@@ -69,8 +70,8 @@ scatter_plot <- function(df, title = "", tag = list("A", "B")){
 
 
     p2<- ggplot(df, aes(y=average_ML, x=average_3d, color=RF_3d_ML) ) + geom_point() + scale_color_gradient(low="red", high="blue")+
-        xlab('IMD-ME average bootstrap')+
-        ylab('Seq-ML average bootstrap')+
+        xlab('IMD average bootstrap support value')+
+        ylab('ML average bootstrap support value')+
         labs(color='RF') +geom_abline(color='gray')+
         annotate('text', x=33, y=95, label=paste('R = ', C3dml,sep=''))+
         xlim(c(0,100))+ylim(c(0,100))+theme_light()+
@@ -101,7 +102,7 @@ scatter_plot <- function(df, title = "", tag = list("A", "B")){
 
 plot_lines <- function(al,tr, folder, tag = list("","")){
   DF= read.table(paste('source_data/',al,'_',tr,'counts_of_found_in_ML_and_ME_with_moving_IMD_BS_thr.txt', sep=''), header = T)
-  DF["TTB"]  = max(DF["TB"])
+  #DF["TTB"]  = max(DF["TB"])
   OKB_ML = DF[,"OKB_ML"]
   OKB_ME = DF[,"OKB_ME"]
   TTB    = DF[,"TTB"]
@@ -132,8 +133,8 @@ plot_lines <- function(al,tr, folder, tag = list("","")){
   color2 = "#00BFC4"
   palette <-c(color1, color2)
   
-  PML=ggplot(dfML, aes(x=pos, y=frac_ok, color=type))+geom_line(size=1)+xlab('IMD-ME average bootstrap')+labs(title = title)+scale_y_continuous(
-    name = 'Branches occurring in Seq-ML (%)', 
+  PML=ggplot(dfML, aes(x=pos, y=frac_ok, color=type))+geom_line(size=1)+xlab('IMD average bootstrap suport value')+labs(title = title)+scale_y_continuous(
+    name = 'Branches occurring in ML (%)', 
     sec.axis = sec_axis(~., name="Considered branches (%)"),
     limits=c(0,100),
     breaks = c(0,25,50,75,100)
@@ -147,12 +148,12 @@ plot_lines <- function(al,tr, folder, tag = list("","")){
     theme(axis.text = element_text( size = 12, color = "black"))+
     theme(axis.title = element_text( size = 14))+ theme(plot.title = element_text(hjust = 0.5))+
     theme(axis.text = element_text(color = "black", size = 10))+
-    labs(title = title, tag = bquote(bold(.(tag[[1]]))))+
+    labs(title = title, tag = bquote(bold(.(tag[[2]]))))+
     theme(plot.margin = margin(1, 1, 1, 1, "cm"))
     
   
-  PME=ggplot(dfME, aes(x=pos, y=frac_ok, color=type))+geom_line(size=1)+xlab('IMD-ME average bootstrap')+labs(title = title)+scale_y_continuous(
-    name = 'Branches occurring in Seq-ME (%)', 
+  PME=ggplot(dfME, aes(x=pos, y=frac_ok, color=type))+geom_line(size=1)+xlab('IMD average bootstrap support value')+labs(title = title)+scale_y_continuous(
+    name = 'Branches occurring in ME (%)', 
     sec.axis = sec_axis(~., name="Considered branches (%)"),
     limits=c(0,100),
     breaks = c(0,25,50,75,100)
@@ -168,7 +169,7 @@ plot_lines <- function(al,tr, folder, tag = list("","")){
     theme(axis.title = element_text( size = 14))+ theme(plot.title = element_text(hjust = 0.5))+
     theme(axis.text = element_text(color = "black", size = 10))+
     theme(panel.background = element_rect(fill = "transparent", color = NA))+
-    labs(title = title, tag = bquote(bold(.(tag[[2]]))))+
+    labs(title = title, tag = bquote(bold(.(tag[[1]]))))+
     theme(plot.margin = margin(1, 1, 1, 1, "cm"))
   
   
@@ -182,12 +183,12 @@ plot_lines <- function(al,tr, folder, tag = list("","")){
 main <- scatter_plot("source_data/mTMalign_untrimmed_bootstrap_table.csv",tag = list("A", "B"))
 pA <- main[[1]]
 pB <- main[[2]]
-
+pA
 
 main <- plot_lines("mTMalign", "untrimmed", "main", tag = list("C", "D"))
 pC <- main[[1]]
 pD <- main[[2]]
-
+pC
 # Arrange the plots with spacing
 panel <- (pA+pB)/(pC+pD)
 
@@ -209,7 +210,7 @@ pc <- pCD[[1]]
 pd <- pCD[[2]]
 
 panel <- (pa+pb)/(pc+pd)
-ggsave(paste('plots/',"suppl",'/S3_scatter_bootstrap_untrimmed.png', sep = ""), plot=panel, width = 14 , height =12)
+ggsave(paste('plots/',"suppl",'/S8_scatter_bootstrap_untrimmed.png', sep = ""), plot=panel, width = 14 , height =12)
 
 
 # TRIMMED
@@ -224,7 +225,7 @@ pe <- pEF[[1]]
 pf <- pEF[[2]]
 
 panel <- (pa+pb)/(pc+pd)/(pe+pf)
-ggsave(paste('plots/',"suppl",'/S4_scatter_bootstrap_trimmed.png', sep = ""), plot=panel, width = 15 , height =18)
+ggsave(paste('plots/',"suppl",'/S9_scatter_bootstrap_trimmed.png', sep = ""), plot=panel, width = 15 , height =18)
 
 
 #---------------- LINEPLOTS ---------------------
@@ -232,6 +233,7 @@ ggsave(paste('plots/',"suppl",'/S4_scatter_bootstrap_trimmed.png', sep = ""), pl
 pAB <- plot_lines("sap_tmalign", "untrimmed", "suppl", list("A", "B"))
 pa <- pAB[[1]]
 pb <- pAB[[2]]
+
 pCD <- plot_lines("tcoffee", "untrimmed", "suppl", list("C", "D"))
 pc <- pCD[[1]]
 pd <- pCD[[2]]

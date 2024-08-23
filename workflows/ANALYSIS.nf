@@ -1,6 +1,9 @@
 include { evaluate_nirmsd                    } from '../modules/evaluate_nirmsd.nf'
 include { split_analysis                     } from '../subworkflows/split_analysis.nf'
 include { compute_splits                     } from '../subworkflows/compute_splits.nf'
+include { TCOFFEE_SEQREFORMAT                } from '../modules/TCOFFEE_SEQREFORMAT.nf'
+
+
 workflow ANALYSIS{
 
     take:
@@ -18,6 +21,12 @@ workflow ANALYSIS{
         .combine(templates, by:0)
         .combine(pdb, by:0)
         .set{aln_ch}
+
+
+        // --------------------------------
+        //     COMPUTE PERC SIMILARITY 
+        // --------------------------------
+        TCOFFEE_SEQREFORMAT(msas)
 
 
         // ------------------
@@ -43,6 +52,10 @@ workflow ANALYSIS{
 
         // Compute the splits
         compute_splits(ch_for_splits)
+
+
+
+
 
 
 }
