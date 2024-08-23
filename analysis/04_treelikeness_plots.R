@@ -66,7 +66,7 @@ p_sat1=ggplot(df111, aes(x=type, y=correlations, fill=type, col = type, alpha = 
     geom_segment(aes(x = 0, xend = 0, y = 0, yend = 1), linetype = "solid", color = "black")+
     annotate('text', x=df111$type[1], y=0.4, label=( paste("median =", median_seq)), vjust=1.7, col = "black", size = 3.5)+
     annotate('text', x=df111$type[513], y=0.53, label=(paste("median =", median_tm)), vjust=1.7, col = "black", size = 3.5)+
-    annotate('text', x=df111$type[1025], y=0.53, label=(paste("median =", median_imd)), vjust=1.7, col = "black", size = 3.5)+
+    annotate('text', x=df111$type[1025], y=0.58, label=(paste("median =", median_imd)), vjust=1.7, col = "black", size = 3.5)+
   theme(panel.background = element_rect(fill = "transparent", color = NA))+ theme(plot.background = element_rect(color = NA))
 
 
