@@ -83,7 +83,7 @@ maxfillval = max(maxfill_pdist, maxfill_imd, maxfill_tm, maxfill_me)
 
 hexbin_example_imd <- plot_saturation_with_fitted_lines(prep_imd_example$df, prep_imd_example$line_before, prep_imd_example$line_after, "dIMD", "normalized IMD distance", threshold)+theme(legend.position = "right")
 hexbin_example_tm <- plot_saturation_with_fitted_lines(prep_tm_example$df, prep_tm_example$line_before, prep_tm_example$line_after, "dTM", "normalized TM distance", threshold)+theme(legend.position = "right")
-hexbin_example_perc <- plot_saturation_with_fitted_lines(prep_perc_example$df, prep_perc_example$line_before, prep_perc_example$line_after, "pdist", "pdist", threshold)+theme(legend.position = "right")
+hexbin_example_perc <- plot_saturation_with_fitted_lines(prep_perc_example$df, prep_perc_example$line_before, prep_perc_example$line_after, "pdist", "normalized pdist", threshold)+theme(legend.position = "right")
 hexbin_example_me <- plot_saturation_with_fitted_lines(prep_me_example$df, prep_me_example$line_before, prep_me_example$line_after, "dME", "normalized ME distance", threshold)+theme(legend.position = "right")
 hexbin_example_imd <- hexbin_example_imd+theme(legend.position = "right")+xlim(0,max(prep_tm_example$df$pML)+0.2)
 hexbin_example_tm <-hexbin_example_tm+theme(legend.position = "none")+xlim(0,max(prep_tm_example$df$pML)+0.2)
@@ -138,9 +138,8 @@ for (fam in fl){
   slope_threshold = c(slope_threshold_imd, slope_threshold_tm, slope_threshold_perc, slope_threshold_me)
   r2 = c(r2_imd, r2_tm, r2_perc, r2_me)
   r2_threshold = c(r2_imd_threshold, r2_tm_threshold, r2_perc_threshold, r2_me_threshold)
-  n_points_interval = c(n_points_interval_imd, n_points_interval_tm, n_points_interval_perc, n_points_interval_me)
   family = c(fam, fam, fam, fam)
-  slopes = data.frame(method, slope, r2,slope_threshold,r2_threshold, family, n_right_points, n_left_points, n_points_interval)
+  slopes = data.frame(method, slope, r2,slope_threshold,r2_threshold, family, n_right_points, n_left_points)
   colnames(slopes) = c("method", "slope", "r2", "slope_threshold", "r2_threshold", "family", "n_right_points", "n_left_points")
   overall_slopes_per_family = rbind(overall_slopes_per_family, slopes)
 }
@@ -280,7 +279,7 @@ plot_scatters_distances <- function(df, low_5, plot_name){
     # add perc id
     r = cor(input_patristic_df_subset$pdist, input_patristic_df_subset$pML, method = "pearson")
     r2 = r^2
-    plot_sat = saturation_plot_smooth(input_patristic_df_subset, "pML", "pdist", "ML patristic distance", "pdist")+ggtitle(paste("R² = ", round(r2, 2)))
+    plot_sat = saturation_plot_smooth(input_patristic_df_subset, "pML", "pdist", "ML patristic distance", "normalized pdist")+ggtitle(paste("R² = ", round(r2, 2)))
     plot_sat = plot_sat +ggtitle(paste(fam, "\n R² = ", round(r2, 2), "\n pdist = ", round(mean(input_patristic_df_subset$pdist), 2)))
     # put title in the milddle
     plot_sat = plot_sat + theme(plot.title = element_text(hjust = 0.5))+theme(legend.position = "none")
