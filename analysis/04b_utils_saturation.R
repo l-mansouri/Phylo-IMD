@@ -41,7 +41,8 @@ get_before_after <- function(df, y, threshold, threshold_filtering =0){
   # IMD vs ML patristic distance
   df_imd_ml = df[,c(y, "pML", "family", "seq1", "seq2")]
   df_imd_ml_before = df_imd_ml[df_imd_ml$pML < threshold,]
-  df_imd_ml_after = df_imd_ml[df_imd_ml$pML >= threshold,]
+  #df_imd_ml_after = df_imd_ml[df_imd_ml$pML >= threshold,]
+  df_imd_ml_after = df_imd_ml
   # Check if there are enough points to fit a line
   if(nrow(df_imd_ml_before) < 10 | nrow(df_imd_ml_after) < 10){
     return( list(df = df_imd_ml, line_before = NA, line_after = NA, slope_before = NA, slope_after = NA, r2_before = NA, r2_after = NA))
