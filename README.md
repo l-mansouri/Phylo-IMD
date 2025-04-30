@@ -91,13 +91,30 @@ To see how to properly prepare the input files, look into the example dataset in
 The command line: 
 
 ```
-nextflow run main.nf -profile multistrap -fasta <id.fasta> -templates <id.template> -pdbs mypdbs/* -seq_tree <ML|ME>
+nextflow run main.nf -profile multistrap \
+                     -fasta mtmalign_intput_list \
+                     -templates <id.template> \
+                     -pdbs mypdbs/* \
+                     -seq_tree <ML|ME>
 ```
 
-- `fasta` is a fasta file with the sequences you want to build the tree on. 
-- `pdbs` is all the pdbs associated to the sequences present in your fasta file. 
-- `templates` is a file with the explicit mapping of each sequence in your fasta file and each pdb you are providing.
-  The template files should follow the corresponding syntax (mTM-align or 3D-Coffee correspondingly). You can find examples for both in the data folder.
+### Input Files Description
+
+- **`fasta`**  
+  Input file used by the default aligner, **mTM-align**. It should contain a list of PDB files to be aligned. Each entry must correspond to a PDB file provided via the `--pdb` flag, with matching names.  
+  - For standard runs (with the multistrap profile), this is a simple list of PDB identifiers.  
+    👉 [Example input](https://github.com/l-mansouri/Phylo-IMD/blob/main/data/mtmalign_input_lists/PF00006_input_list)
+  - For more advanced analyses, please refer to: [analysis](https://github.com/l-mansouri/Phylo-IMD/blob/main/Analysis.md).
+
+
+- **`pdbs`**  
+  A directory or list of PDB files. All PDBs provided with `--fasta` must be provided.  
+  File names must exactly match the identifiers used in the `fasta` input.
+
+- **`templates`**  
+  A mapping file that links each sequence from the `fasta` file to its corresponding PDB structure.  
+  The template file must follow a specific format.  
+  👉 [Example template file](https://github.com/l-mansouri/Phylo-IMD/blob/main/data/mtmalign_template_lists/PF00006_ref.template_list)
 
 <details markdown="1">
 <summary>Output files</summary>
